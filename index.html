@@ -632,6 +632,32 @@
   .module .tag-row{gap:7px;}
   .module .tag{font-size:10.5px; padding:3px 8px;}
 
+  /* ---------- EDUCATION ---------- */
+  .edu-card{
+    border:1px solid var(--line-soft);
+    border-radius:12px;
+    padding:28px 32px;
+    background:rgba(12,18,25,0.5);
+    position:relative;
+    overflow:hidden;
+  }
+  .edu-card::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:linear-gradient(180deg, var(--accent), var(--amber));
+    opacity:0.85;
+  }
+  .edu-card h3{font-size:22px; margin-bottom:6px;}
+  .edu-card .edu-school{color:var(--text-muted); font-size:15px; margin-bottom:16px;}
+  .edu-meta{
+    display:flex; flex-wrap:wrap; gap:10px 18px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-dim);
+    margin-bottom:14px;
+  }
+  .edu-meta span{color:var(--accent);}
+  .edu-card .edu-project{font-size:14px; color:var(--text-muted); line-height:1.55;}
+  .edu-card .edu-project b{color:var(--text); font-weight:500;}
+
   /* ---------- DOMAINS ---------- */
   .chip-row{display:flex; flex-wrap:wrap; gap:10px;}
   .chip{
@@ -717,6 +743,7 @@
       <a href="#products">Products</a>
       <a href="#projects">Projects</a>
       <a href="#skills">Capabilities</a>
+      <a href="#education">Education</a>
       <a href="#contact">Contact</a>
     </div>
   </div>
@@ -758,7 +785,7 @@
     <div class="stat"><b data-count="10">10+</b><span>Years Engineering</span></div>
     <div class="stat"><b>9</b><span>Layers Owned, DB → Prod</span></div>
     <div class="stat"><b>4</b><span>Mobile Apps Shipped</span></div>
-    <div class="stat"><b>12+</b><span>Industries Served</span></div>
+    <div class="stat"><b>15+</b><span>Industries Served</span></div>
   </div>
 </div>
 
@@ -772,7 +799,7 @@
     <div class="about-grid">
       <div>
         <p>I'm a Senior/Lead-level software engineer with more than ten years building, maintaining, modernizing, and optimizing software across enterprise and product environments. My strongest foundation is the .NET ecosystem — C#, ASP.NET Core, Web API, SQL Server, Entity Framework — complemented by deep frontend experience in Angular and, more recently, React with TypeScript.</p>
-        <p>Based in Egypt, I work remote-only with US companies across American timezones — currently at Infinite Software Solutions, Inc. My career spans healthcare, banking, insurance, government, manufacturing, and international software companies. More recently that's expanded into multi-tenant and multi-database architecture, application performance investigation, cloud troubleshooting, CI/CD pipelines with custom build agents, and dynamic reporting platforms.</p>
+        <p>Based in Egypt, I work remote-only with US companies across American timezones — currently at Infinite Software Solutions, Inc. My career spans healthcare, banking, insurance, government, manufacturing, travel, IoT, and international software companies. More recently that's expanded into multi-tenant and multi-database architecture, application performance investigation, cloud troubleshooting, CI/CD pipelines with custom build agents, and dynamic reporting platforms.</p>
         <p>Outside of full-time roles, I've independently designed and evolved production healthcare ecosystems — web, backend, database, and role-specific mobile apps live on the App Store and Google Play — combining WhatsApp Cloud API, payment gateways, real-time notifications, and operational dashboards used daily by patients, doctors, and staff.</p>
         <p>I'm not looking to be known for a long list of technologies. I take responsibility for whether a complex system actually works — in architecture, integration, performance, and production.</p>
       </div>
@@ -842,17 +869,17 @@
 
       <div class="titem">
         <div class="thead">
-          <span class="tyear">~2021–22</span>
+          <span class="tyear">Nov 2022 – Mar 2023</span>
           <span class="trole">Senior .NET Consultant</span>
           <span class="tco">— Egabi Solutions (Egyptian Ministry of Justice)</span>
         </div>
-        <p class="tdesc">Built and supported government legal systems including the Misdemeanors Court and Cassation Court systems. Designed scalable backend systems and database schemas, wrote and optimized stored procedures, and translated legal/business requirements into technical solutions.</p>
-        <div class="tag-row"><span class="tag">ASP.NET Core</span><span class="tag">Angular</span><span class="tag">SQL Server</span><span class="tag">Government</span></div>
+        <p class="tdesc">Built and supported government legal systems including Misdemeanors Court (.NET Web Forms) and Cassation Court (.NET Core + Angular). Designed scalable backends and SQL Server schemas, optimized stored procedures, and supported Legal department portals including Cyclopedia, KOHA, and Healthcare.</p>
+        <div class="tag-row"><span class="tag">Web Forms</span><span class="tag">ASP.NET Core</span><span class="tag">Angular</span><span class="tag">SQL Server</span><span class="tag">Government</span></div>
       </div>
 
       <div class="titem">
         <div class="thead">
-          <span class="tyear">~2021–22</span>
+          <span class="tyear">Apr – Nov 2022</span>
           <span class="trole">Backend / Microservices Engineer</span>
           <span class="tco">— ATIS, Albania · TaskWarp &amp; NEMS</span>
         </div>
@@ -862,11 +889,41 @@
 
       <div class="titem">
         <div class="thead">
-          <span class="tyear">~2019–21</span>
+          <span class="tyear">Apr – Sep 2022</span>
+          <span class="trole">.NET / IoT Engineer</span>
+          <span class="tco">— ITE CORP, Egypt</span>
+        </div>
+        <p class="tdesc">Delivered IoT Tracking for assets and people on .NET Framework, plus an Innovation System combining .NET Framework backends with AngularJS frontends for operational and tracking workflows.</p>
+        <div class="tag-row"><span class="tag">.NET Framework</span><span class="tag">AngularJS</span><span class="tag">IoT</span></div>
+      </div>
+
+      <div class="titem">
+        <div class="thead">
+          <span class="tyear">~2021 – Apr 2022</span>
+          <span class="trole">.NET Developer</span>
+          <span class="tco">— DevopSolution / GAMA, KSA</span>
+        </div>
+        <p class="tdesc">Built Travotels travel APIs on .NET Core and Taif web applications on .NET Core MVC for Saudi hospitality and travel operations.</p>
+        <div class="tag-row"><span class="tag">.NET Core API</span><span class="tag">.NET Core MVC</span><span class="tag">Travel</span><span class="tag">KSA</span></div>
+      </div>
+
+      <div class="titem">
+        <div class="thead">
+          <span class="tyear">Mar – Jun 2021</span>
+          <span class="trole">Full-Stack / Backend</span>
+          <span class="tco">— Alkhwadm Digital, KSA</span>
+        </div>
+        <p class="tdesc">Shipped a Call Center platform (AngularJS + .NET MVC) and WhatsApp Loop mobile client (Flutter) for digital customer-service workflows in the Saudi market.</p>
+        <div class="tag-row"><span class="tag">AngularJS</span><span class="tag">.NET MVC</span><span class="tag">Flutter</span><span class="tag">WhatsApp</span></div>
+      </div>
+
+      <div class="titem">
+        <div class="thead">
+          <span class="tyear">Mar 2019 – Mar 2021</span>
           <span class="trole">R&amp;D Software Engineer</span>
           <span class="tco">— eBSEG, Egypt</span>
         </div>
-        <p class="tdesc">R&amp;D on Omni-Channel customer experience platforms — Portal, CEEP, Channel Manager, E-Messaging, and a ChatBot engine — with messaging integrations across Facebook, WhatsApp, and Telegram for banking and insurance clients including NBE, CIB, and Bloom.</p>
+        <p class="tdesc">R&amp;D on Omni-Channel customer experience platforms — Portal, CEEP, Channel Manager, E-Messaging, and a ChatBot engine with full-text search / NLP — integrating Facebook, WhatsApp, and Telegram for banking clients (NBE, CA, EBE, BSF, Bloom) and insurance clients (MLI, AHLIA).</p>
         <div class="tag-row"><span class="tag">Chatbot / NLP</span><span class="tag">Messaging APIs</span><span class="tag">Banking &amp; Insurance</span></div>
       </div>
 
@@ -876,7 +933,7 @@
           <span class="trole">Full-Stack / Mobile Engineer</span>
           <span class="tco">— Intelligent Valley</span>
         </div>
-        <p class="tdesc">Built and shipped client-facing e-commerce and mobile products including My iFlights, Car Exhibitions, and Kunafa Shop — covering .NET backends, Angular web apps, and Flutter mobile clients.</p>
+        <p class="tdesc">Built and shipped client-facing e-commerce and mobile products including an e-commerce web app, My iFlights, Car Exhibitions, and Kunafa Shop — covering .NET backends, Angular web apps, and Flutter mobile clients.</p>
         <div class="tag-row"><span class="tag">.NET</span><span class="tag">Angular</span><span class="tag">Flutter</span><span class="tag">E-Commerce</span></div>
       </div>
 
@@ -896,8 +953,8 @@
           <span class="trole">Founding Engineer</span>
           <span class="tco">— Medical Laboratory Management System (→ EKO)</span>
         </div>
-        <p class="tdesc">Started as a desktop + web laboratory system in C# / VB.NET / ASP.NET; grew independently over years into a full healthcare ecosystem — detailed under Flagship Products below.</p>
-        <div class="tag-row"><span class="tag">Healthcare</span><span class="tag">Long-term ownership</span><span class="tag">Freelance / Independent</span></div>
+        <p class="tdesc">Started as a desktop + web laboratory system in C# / VB.NET / WinForms / ASP.NET for clients in Egypt, London, Saudi Arabia, and Libya; modernized over years into Angular + .NET Core with a full multi-app healthcare ecosystem — detailed under Flagship Products below.</p>
+        <div class="tag-row"><span class="tag">Healthcare</span><span class="tag">Legacy → modern</span><span class="tag">Long-term ownership</span></div>
       </div>
     </div>
   </div>
@@ -916,14 +973,16 @@
       <div class="pcard">
         <span class="pnum">PRODUCT · 01</span>
         <h3>Integrated Laboratory Management &amp; Digital Healthcare Platform</h3>
-        <p>A medical laboratory system grown over years into a full production ecosystem — web, backend, database, and role-specific mobile apps used in a live healthcare business today.</p>
+        <p>A medical laboratory system grown over years into a full production ecosystem — web, backend, database, and role-specific mobile apps used in a live healthcare business today, with clients across Egypt, London, Saudi Arabia, and Libya.</p>
         <ul>
+          <li>Legacy WinForms / VB.NET / ASP.NET path modernized to Angular + .NET Core</li>
           <li>Web platform with integrated printing workflows</li>
+          <li>Blazor dispensing panel for prescriptions and insurance API hooks</li>
           <li>Meta WhatsApp Cloud API for patient/customer comms</li>
           <li>Mobile apps for management, staff, doctors, and patients</li>
-          <li>Notifications, notes, dashboards &amp; statistics</li>
+          <li>EMR-oriented data access, notifications, dashboards &amp; statistics</li>
         </ul>
-        <div class="tag-row"><span class="tag">iOS + Android</span><span class="tag">WhatsApp API</span><span class="tag">Live in production</span></div>
+        <div class="tag-row"><span class="tag">iOS + Android</span><span class="tag">Blazor</span><span class="tag">WhatsApp API</span><span class="tag">Live in production</span></div>
       </div>
 
       <div class="pcard">
@@ -966,15 +1025,15 @@
     <div class="sec-head reveal">
       <div class="eyebrow">Selected Work</div>
       <h2>Projects &amp; freelance deliveries</h2>
-      <p>Client and product work beyond the flagship platforms — travel, retail, construction, industrial, and omni-channel systems shipped into real use.</p>
+      <p>Client and product work beyond the flagship platforms — travel, retail, construction, industrial, IoT, and omni-channel systems shipped into real use.</p>
     </div>
 
     <div class="project-grid stagger">
       <article class="proj">
         <div class="pmeta"><span class="ptype">Independent · Freelance</span><span>·</span><span>2015 → ongoing</span></div>
         <h3>EKO / Laboratory Management Ecosystem</h3>
-        <p>Independent healthcare product started as a desktop + web lab system and grown into a multi-app ecosystem for labs, staff, doctors, and patients — still operating as a live business today.</p>
-        <div class="tag-row"><span class="tag">C# / .NET</span><span class="tag">ASP.NET</span><span class="tag">SQL Server</span><span class="tag">Flutter</span><span class="tag">WhatsApp API</span></div>
+        <p>Independent healthcare product started as a desktop + web lab system and grown into a multi-app ecosystem for labs, staff, doctors, and patients — with Blazor dispensing, EMR-oriented data access, and clients in Egypt, London, KSA, and Libya.</p>
+        <div class="tag-row"><span class="tag">C# / .NET</span><span class="tag">Angular</span><span class="tag">Blazor</span><span class="tag">SQL Server</span><span class="tag">Flutter</span><span class="tag">WhatsApp API</span></div>
       </article>
 
       <article class="proj">
@@ -989,10 +1048,101 @@
       </article>
 
       <article class="proj">
+        <div class="pmeta"><span class="ptype">Client delivery</span><span>·</span><span>DevopSolution / GAMA · KSA</span></div>
+        <h3>Travotels</h3>
+        <p>Travel / hospitality backend APIs for booking and operations workflows — .NET Core Web API serving Saudi market clients.</p>
+        <div class="tag-row"><span class="tag">Travel</span><span class="tag">.NET Core API</span><span class="tag">KSA</span></div>
+      </article>
+
+      <article class="proj">
+        <div class="pmeta"><span class="ptype">Client delivery</span><span>·</span><span>DevopSolution / GAMA · KSA</span></div>
+        <h3>Taif</h3>
+        <p>Web application for Taif operations built with .NET Core MVC — server-rendered flows for hospitality and regional business processes.</p>
+        <div class="tag-row"><span class="tag">.NET Core MVC</span><span class="tag">Hospitality</span><span class="tag">KSA</span></div>
+      </article>
+
+      <article class="proj">
+        <div class="pmeta"><span class="ptype">Client delivery</span><span>·</span><span>Alkhwadm Digital · KSA · 2021</span></div>
+        <h3>Call Center &amp; WhatsApp Loop</h3>
+        <p>Call Center platform on AngularJS + .NET MVC paired with WhatsApp Loop, a Flutter mobile client for messaging-driven customer service loops.</p>
+        <div class="tag-row"><span class="tag">AngularJS</span><span class="tag">.NET MVC</span><span class="tag">Flutter</span><span class="tag">WhatsApp</span></div>
+      </article>
+
+      <article class="proj">
+        <div class="pmeta"><span class="ptype">Client delivery</span><span>·</span><span>ITE CORP · 2022</span></div>
+        <h3>IoT Tracking Assets &amp; People</h3>
+        <p>Asset and people tracking solution on .NET Framework — real-time location and operational visibility for tracked entities.</p>
+        <div class="tag-row"><span class="tag">IoT</span><span class="tag">.NET Framework</span><span class="tag">Tracking</span></div>
+      </article>
+
+      <article class="proj">
+        <div class="pmeta"><span class="ptype">Client delivery</span><span>·</span><span>ITE CORP · 2022</span></div>
+        <h3>Innovation System</h3>
+        <p>Operational innovation platform combining .NET Framework services with an AngularJS frontend for internal process and idea workflows.</p>
+        <div class="tag-row"><span class="tag">.NET Framework</span><span class="tag">AngularJS</span></div>
+      </article>
+
+      <article class="proj">
+        <div class="pmeta"><span class="ptype">Freelance</span><span>·</span><span>Healthcare</span></div>
+        <h3>Clinic App</h3>
+        <p>Clinic management web and mobile product — Angular + .NET Core API with Flutter mobile clients for appointments and clinic operations.</p>
+        <div class="tag-row"><span class="tag">Angular</span><span class="tag">.NET Core API</span><span class="tag">Flutter</span><span class="tag">Clinic</span></div>
+      </article>
+
+      <article class="proj">
+        <div class="pmeta"><span class="ptype">Freelance</span><span>·</span><span>CMS</span></div>
+        <h3>Website Builder CMS</h3>
+        <p>Site-builder application on ASP.NET MVC for composing and publishing websites without hand-coding every page.</p>
+        <div class="tag-row"><span class="tag">ASP.NET MVC</span><span class="tag">CMS</span></div>
+      </article>
+
+      <article class="proj">
+        <div class="pmeta"><span class="ptype">Freelance</span><span>·</span><span>Industrial / Oil</span></div>
+        <h3>OIL Desalter Real-Time CRUD</h3>
+        <p>Real-time industrial CRUD application for oil desalter operations — AngularJS frontend with ASP.NET API and live updates.</p>
+        <div class="tag-row"><span class="tag">AngularJS</span><span class="tag">ASP.NET API</span><span class="tag">Real-time</span></div>
+      </article>
+
+      <article class="proj">
+        <div class="pmeta"><span class="ptype">Freelance</span><span>·</span><span>IoT</span></div>
+        <h3>IoT Smart Home</h3>
+        <p>Smart-home control stack with ASP.NET APIs and a Flutter mobile client for device and automation management.</p>
+        <div class="tag-row"><span class="tag">ASP.NET API</span><span class="tag">Flutter</span><span class="tag">IoT</span></div>
+      </article>
+
+      <article class="proj">
+        <div class="pmeta"><span class="ptype">Freelance</span><span>·</span><span>Mobility</span></div>
+        <h3>Wagon Car Rent</h3>
+        <p>.NET Core API backend for car-rental operations — bookings, fleet, and rental workflow services.</p>
+        <div class="tag-row"><span class="tag">.NET Core API</span><span class="tag">Car Rental</span></div>
+      </article>
+
+      <article class="proj">
+        <div class="pmeta"><span class="ptype">Freelance</span><span>·</span><span>API delivery</span></div>
+        <h3>Night-Tech</h3>
+        <p>.NET Core API services for the Night-Tech product surface — backend contracts and integrations for the client application.</p>
+        <div class="tag-row"><span class="tag">.NET Core API</span></div>
+      </article>
+
+      <article class="proj">
+        <div class="pmeta"><span class="ptype">Freelance</span><span>·</span><span>Real Estate</span></div>
+        <h3>Property Real Estate API</h3>
+        <p>.NET Core API for property listings and real-estate operations — listings, inquiries, and property data services.</p>
+        <div class="tag-row"><span class="tag">.NET Core API</span><span class="tag">Real Estate</span></div>
+      </article>
+
+      <article class="proj">
         <div class="pmeta"><span class="ptype">Client delivery</span><span>·</span><span>Intelligent Valley · 2018–19</span></div>
         <h3>My iFlights</h3>
         <p>Travel / flights e-commerce experience covering booking flows and mobile delivery — built across .NET services, Angular web, and Flutter mobile.</p>
         <div class="tag-row"><span class="tag">Travel</span><span class="tag">.NET</span><span class="tag">Angular</span><span class="tag">Flutter</span></div>
+      </article>
+
+      <article class="proj">
+        <div class="pmeta"><span class="ptype">Client delivery</span><span>·</span><span>Intelligent Valley · 2018–19</span></div>
+        <h3>E-Commerce Web App</h3>
+        <p>Client-facing e-commerce web application on .NET and Angular — catalog, cart, and storefront flows for retail delivery.</p>
+        <div class="tag-row"><span class="tag">E-Commerce</span><span class="tag">.NET</span><span class="tag">Angular</span></div>
       </article>
 
       <article class="proj">
@@ -1026,15 +1176,15 @@
       <article class="proj">
         <div class="pmeta"><span class="ptype">R&amp;D delivery</span><span>·</span><span>eBSEG · Banking &amp; Insurance</span></div>
         <h3>Omni-Channel CX &amp; ChatBot Engine</h3>
-        <p>R&amp;D on Portal, CEEP, Channel Manager, E-Messaging, and a ChatBot engine with Facebook, WhatsApp, and Telegram integrations for banking and insurance clients including NBE, CIB, and Bloom.</p>
+        <p>R&amp;D on Portal, CEEP, Channel Manager, E-Messaging, and a ChatBot engine with Facebook, WhatsApp, and Telegram integrations — banking (NBE, CA, EBE, BSF, Bloom) and insurance (MLI, AHLIA).</p>
         <div class="tag-row"><span class="tag">ChatBot / NLP</span><span class="tag">WhatsApp</span><span class="tag">Telegram</span><span class="tag">Banking</span></div>
       </article>
 
       <article class="proj">
         <div class="pmeta"><span class="ptype">Government delivery</span><span>·</span><span>Egabi · Ministry of Justice</span></div>
         <h3>Misdemeanors &amp; Cassation Court Systems</h3>
-        <p>Backend and data-layer work on government legal systems — scalable ASP.NET Core services, Angular clients, SQL Server schemas, and stored-procedure optimization for court workflows.</p>
-        <div class="tag-row"><span class="tag">ASP.NET Core</span><span class="tag">Angular</span><span class="tag">SQL Server</span><span class="tag">Government</span></div>
+        <p>Misdemeanors Court on .NET Web Forms and Cassation Court on ASP.NET Core + Angular — SQL Server schemas, stored-procedure optimization, plus support for Legal, Cyclopedia, KOHA, and Healthcare portals.</p>
+        <div class="tag-row"><span class="tag">Web Forms</span><span class="tag">ASP.NET Core</span><span class="tag">Angular</span><span class="tag">SQL Server</span></div>
       </article>
 
       <article class="proj">
@@ -1060,7 +1210,8 @@
       <div class="module">
         <h4>Backend</h4>
         <div class="tag-row">
-          <span class="tag">C#</span><span class="tag">ASP.NET Core</span><span class="tag">Web API</span>
+          <span class="tag">C#</span><span class="tag">VB.NET</span><span class="tag">ASP.NET Core</span><span class="tag">Web API</span>
+          <span class="tag">ASP.NET MVC</span><span class="tag">Razor</span><span class="tag">Web Forms</span><span class="tag">Blazor</span>
           <span class="tag">EF Core</span><span class="tag">ADO.NET</span><span class="tag">LINQ</span><span class="tag">REST</span>
         </div>
       </div>
@@ -1068,14 +1219,15 @@
         <h4>Frontend</h4>
         <div class="tag-row">
           <span class="tag">React</span><span class="tag">Angular</span><span class="tag">AngularJS</span>
-          <span class="tag">TypeScript</span><span class="tag">JavaScript</span><span class="tag">HTML/CSS</span>
+          <span class="tag">TypeScript</span><span class="tag">JavaScript</span><span class="tag">jQuery</span>
+          <span class="tag">HTML/CSS</span><span class="tag">Bootstrap</span><span class="tag">Tailwind</span><span class="tag">Angular Material</span>
         </div>
       </div>
       <div class="module">
         <h4>Database</h4>
         <div class="tag-row">
           <span class="tag">SQL Server</span><span class="tag">MySQL</span><span class="tag">PostgreSQL</span>
-          <span class="tag">MongoDB</span><span class="tag">Multi-tenant DB</span><span class="tag">Stored Procs</span>
+          <span class="tag">MongoDB</span><span class="tag">ElasticSearch</span><span class="tag">Multi-tenant DB</span><span class="tag">Stored Procs</span>
         </div>
       </div>
       <div class="module">
@@ -1087,35 +1239,62 @@
       <div class="module">
         <h4>Mobile</h4>
         <div class="tag-row">
-          <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">iOS</span><span class="tag">Android</span><span class="tag">Firebase</span>
+          <span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">iOS</span><span class="tag">Android</span>
+          <span class="tag">Swift</span><span class="tag">Firebase</span>
+        </div>
+      </div>
+      <div class="module">
+        <h4>Languages &amp; Automation</h4>
+        <div class="tag-row">
+          <span class="tag">Python</span><span class="tag">Web scraping</span><span class="tag">Automations</span>
         </div>
       </div>
       <div class="module">
         <h4>Architecture</h4>
         <div class="tag-row">
           <span class="tag">Clean Architecture</span><span class="tag">CQRS</span><span class="tag">MediatR</span>
-          <span class="tag">Microservices</span><span class="tag">Multi-tenant</span>
+          <span class="tag">Microservices</span><span class="tag">Multi-tenant</span><span class="tag">SOLID</span><span class="tag">Design Patterns</span>
         </div>
       </div>
       <div class="module">
         <h4>Real-time &amp; Messaging</h4>
         <div class="tag-row">
-          <span class="tag">SignalR</span><span class="tag">WebSockets</span><span class="tag">RabbitMQ</span><span class="tag">FCM</span>
+          <span class="tag">SignalR</span><span class="tag">WebSockets</span><span class="tag">RabbitMQ</span><span class="tag">MSMQ</span><span class="tag">FCM</span>
         </div>
       </div>
       <div class="module">
         <h4>DevOps &amp; Delivery</h4>
         <div class="tag-row">
           <span class="tag">CI/CD</span><span class="tag">Custom agents</span><span class="tag">Git</span>
-          <span class="tag">GitHub Actions</span><span class="tag">Docker</span>
+          <span class="tag">GitHub Actions</span><span class="tag">Docker</span><span class="tag">JIRA</span>
         </div>
       </div>
       <div class="module">
         <h4>Integrations</h4>
         <div class="tag-row">
-          <span class="tag">WhatsApp Cloud API</span><span class="tag">Kashier</span><span class="tag">Telegram</span><span class="tag">Firebase</span>
+          <span class="tag">WhatsApp Cloud API</span><span class="tag">Kashier</span><span class="tag">Telegram</span><span class="tag">Facebook</span><span class="tag">Firebase</span>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="parallax-wash" data-parallax></div>
+  <div class="wrap reveal">
+    <div class="sec-head">
+      <div class="eyebrow">Background</div>
+      <h2>Education</h2>
+    </div>
+    <div class="edu-card">
+      <h3>Diploma of Technical Institutes</h3>
+      <p class="edu-school">Industrial Institute technician · Technological College</p>
+      <div class="edu-meta">
+        <div>Section <span>Modern Electronics</span></div>
+        <div>Grade <span>Good</span></div>
+        <div>Duration <span>2012 – 2014</span></div>
+      </div>
+      <p class="edu-project"><b>Graduation project:</b> Refrigerator and Freezer Temperature Monitoring</p>
     </div>
   </div>
 </section>
@@ -1138,8 +1317,11 @@
       <span class="chip">Construction</span>
       <span class="chip">E-Commerce</span>
       <span class="chip">Travel</span>
+      <span class="chip">Hospitality</span>
       <span class="chip">Real Estate</span>
       <span class="chip">IoT</span>
+      <span class="chip">Automotive</span>
+      <span class="chip">Advertising</span>
       <span class="chip">Customer Experience</span>
       <span class="chip">Reporting &amp; Analytics</span>
     </div>
@@ -1154,6 +1336,7 @@
       <p>Remote only · based in Egypt · working US timezones. Full-stack .NET, React, and Angular — multi-tenant systems, performance engineering, and end-to-end healthcare platforms. Arabic &amp; English.</p>
       <div class="contact-links">
         <a class="btn primary" href="mailto:khaled.oweas@icloud.com" data-magnetic>Email me →</a>
+        <a class="btn ghost" href="tel:+201148824462" data-magnetic>+20 114 882 4462</a>
         <a class="btn ghost" href="https://www.linkedin.com/in/khaledoweas" target="_blank" rel="noopener noreferrer" data-magnetic>LinkedIn</a>
         <a class="btn ghost" href="https://github.com/khaledOweas" target="_blank" rel="noopener noreferrer" data-magnetic>GitHub</a>
       </div>
