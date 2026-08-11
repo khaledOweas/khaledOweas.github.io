@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Khaled Oweas — Senior / Lead Software Engineer</title>
+<meta name="description" content="Senior / Lead software engineer based in Egypt, working remote across US timezones. .NET, React, Angular, SQL — multi-tenant enterprise systems and live healthcare platforms.">
+<meta name="author" content="Khaled Oweas">
+<meta property="og:title" content="Khaled Oweas — Senior / Lead Software Engineer">
+<meta property="og:description" content="Full-stack .NET, React, and Angular engineer. Remote-only. Multi-tenant systems, performance engineering, and production healthcare platforms.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://khaledoweas.github.io/">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -81,9 +88,22 @@
   .nav-links{display:flex; gap:28px; font-size:13px; font-family:var(--font-mono);}
   .nav-links a{color:var(--text-muted); transition:color .2s;}
   .nav-links a:hover{color:var(--accent);}
-  .nav-toggle{display:none;}
+  .nav-toggle{
+    display:none;
+    background:none; border:1px solid var(--line); color:var(--text-muted);
+    font-family:var(--font-mono); font-size:12px; padding:8px 12px; border-radius:3px; cursor:pointer;
+  }
+  .nav-toggle:hover{border-color:var(--accent); color:var(--accent);}
   @media(max-width:720px){
-    .nav-links{display:none;}
+    .nav-toggle{display:inline-flex;}
+    .nav-links{
+      display:none; position:absolute; top:60px; left:0; right:0;
+      flex-direction:column; gap:0; padding:8px 28px 16px;
+      background:rgba(15,20,26,0.96); border-bottom:1px solid var(--line-soft);
+    }
+    .nav-links.open{display:flex;}
+    .nav-links a{padding:12px 0; border-bottom:1px solid var(--line-soft);}
+    .nav-links a:last-child{border-bottom:none;}
   }
 
   /* ---------- HERO ---------- */
@@ -289,6 +309,12 @@
   .pcard ul{list-style:none; font-size:13.3px; color:var(--text-muted); display:flex; flex-direction:column; gap:6px;}
   .pcard ul li::before{content:"→ "; color:var(--accent);}
   .pcard .tag-row{margin-top:auto; padding-top:8px;}
+  .pcard .plink-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:4px;}
+  .pcard .plink{
+    font-family:var(--font-mono); font-size:12px; color:var(--accent);
+    border-bottom:1px solid transparent; transition:border-color .2s;
+  }
+  .pcard .plink:hover{border-bottom-color:var(--accent);}
 
   /* ---------- SKILLS / MODULES ---------- */
   .module-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
@@ -335,7 +361,8 @@
 <nav>
   <div class="wrap">
     <div class="nav-mark"><span class="dot"></span>KHALED.OWEAS</div>
-    <div class="nav-links">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <div class="nav-links" id="nav-links">
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
       <a href="#products">Products</a>
@@ -348,10 +375,10 @@
 <header class="hero">
   <div class="wrap">
     <div>
-      <div class="eyebrow">Available for Senior / Lead roles</div>
+      <div class="eyebrow">Available for Senior / Lead roles · Remote only</div>
       <div class="role-line">.NET · React · Angular · SQL — Enterprise &amp; Healthcare Systems</div>
       <h1>Khaled Oweas</h1>
-      <p class="lede">I design, build, and operate large production software systems end to end — from database schema to deployed release — with a decade of depth in the .NET ecosystem and a track record of shipping complete healthcare platforms independently.</p>
+      <p class="lede">I design, build, and operate large production software systems end to end — from database schema to deployed release — with a decade of depth in the .NET ecosystem and a track record of shipping complete healthcare platforms that are live in the App Store and Google Play today.</p>
 
       <div class="hero-stats">
         <div class="stat"><b>10+</b><span>Years Engineering</span></div>
@@ -391,19 +418,21 @@
     <div class="about-grid">
       <div>
         <p>I'm a Senior/Lead-level software engineer with more than ten years building, maintaining, modernizing, and optimizing software across enterprise and product environments. My strongest foundation is the .NET ecosystem — C#, ASP.NET Core, Web API, SQL Server, Entity Framework — complemented by deep frontend experience in Angular and, more recently, React with TypeScript.</p>
-        <p>My career spans healthcare, banking, insurance, government, manufacturing, and international software companies. More recently that's expanded into multi-tenant and multi-database architecture, application performance investigation, cloud troubleshooting, CI/CD pipelines with custom build agents, and dynamic reporting platforms.</p>
-        <p>Outside of full-time roles, I've independently designed and evolved production healthcare ecosystems — web, backend, database, and four role-specific mobile apps — combining WhatsApp Cloud API, payment gateways, real-time notifications, and operational dashboards used by real patients, doctors, and staff.</p>
+        <p>Based in Egypt, I work remote-only with US companies across American timezones — currently at Infinite Software Solutions, Inc. My career spans healthcare, banking, insurance, government, manufacturing, and international software companies. More recently that's expanded into multi-tenant and multi-database architecture, application performance investigation, cloud troubleshooting, CI/CD pipelines with custom build agents, and dynamic reporting platforms.</p>
+        <p>Outside of full-time roles, I've independently designed and evolved production healthcare ecosystems — web, backend, database, and role-specific mobile apps live on the App Store and Google Play — combining WhatsApp Cloud API, payment gateways, real-time notifications, and operational dashboards used daily by patients, doctors, and staff.</p>
         <p>I'm not looking to be known for a long list of technologies. I take responsibility for whether a complex system actually works — in architecture, integration, performance, and production.</p>
       </div>
       <div class="side-list">
         <h4>At a glance</h4>
         <ul>
+          <li>Location <span>Egypt · Remote only</span></li>
+          <li>Timezone <span>US hours · flexible</span></li>
+          <li>Languages <span>Arabic · English</span></li>
           <li>Core stack <span>C# · .NET Core · SQL Server</span></li>
           <li>Frontend <span>React · Angular · TS</span></li>
           <li>Mobile <span>Flutter · iOS · Android</span></li>
           <li>Architecture <span>Multi-tenant · Clean Arch</span></li>
           <li>Delivery <span>CI/CD · custom agents</span></li>
-          <li>Leadership <span>Mentoring · code review</span></li>
           <li>Strongest domain <span>Healthcare</span></li>
           <li>Current focus <span>Reporting &amp; performance</span></li>
         </ul>
@@ -424,12 +453,12 @@
 
       <div class="titem current">
         <div class="thead">
-          <span class="tyear">CURRENT</span>
+          <span class="tyear">Aug 2024 – Present</span>
           <span class="trole">Senior Software Engineer</span>
-          <span class="tco">— Infinite Software Solutions, Inc. (ISSI)</span>
+          <span class="tco">— Infinite Software Solutions, Inc. (ISSI) · USA · Remote</span>
           <span class="badge-current">Present</span>
         </div>
-        <p class="tdesc">Own large, multi-tenant, multi-database enterprise systems. Lead performance investigation across API, database, and reporting layers; build and maintain CI/CD pipelines with custom cloud/build agents; drive release engineering and production troubleshooting on a dynamic, multi-tenant reporting and analytics platform.</p>
+        <p class="tdesc">Own large, multi-tenant, multi-database enterprise systems for a US company while based in Egypt. Drive performance work that cuts heavy query and dashboard load times across API, database, and reporting layers; support multi-tenant scale in production; build and maintain CI/CD with custom cloud/build agents; and keep a steady release cadence with hands-on production troubleshooting on a dynamic reporting and analytics platform.</p>
         <div class="tag-row">
           <span class="tag">Multi-tenant</span><span class="tag">React + TS</span><span class="tag">.NET Core API</span>
           <span class="tag">Performance</span><span class="tag">CI/CD</span><span class="tag">Custom agents</span>
@@ -515,27 +544,32 @@
       <div class="pcard">
         <span class="pnum">PRODUCT · 01</span>
         <h3>Integrated Laboratory Management &amp; Digital Healthcare Platform</h3>
-        <p>A medical laboratory system grown over years into a full ecosystem spanning web, backend, database, and four role-specific mobile apps.</p>
+        <p>A medical laboratory system grown over years into a full production ecosystem — web, backend, database, and role-specific mobile apps used in a live healthcare business today.</p>
         <ul>
           <li>Web platform with integrated printing workflows</li>
           <li>Meta WhatsApp Cloud API for patient/customer comms</li>
-          <li>4 mobile apps: management, staff, doctors, patients</li>
+          <li>Mobile apps for management, staff, doctors, and patients</li>
           <li>Notifications, notes, dashboards &amp; statistics</li>
         </ul>
-        <div class="tag-row"><span class="tag">iOS + Android</span><span class="tag">WhatsApp API</span><span class="tag">Healthcare</span></div>
+        <div class="tag-row"><span class="tag">iOS + Android</span><span class="tag">WhatsApp API</span><span class="tag">Live in production</span></div>
       </div>
 
       <div class="pcard">
         <span class="pnum">PRODUCT · 02</span>
-        <h3>Khaled Dewan / Dewan Scan Healthcare Platform</h3>
-        <p>A full healthcare ecosystem covering appointment booking, payments, and real-time patient communication.</p>
+        <h3>Khaled Dewan Imaging Center</h3>
+        <p>Full healthcare ecosystem for Dewan Scan radiology — appointment booking, payments, results delivery, and real-time patient communication. Live on the App Store and Google Play.</p>
         <ul>
           <li>Appointment booking &amp; service management</li>
           <li>Kashier payment gateway integration</li>
           <li>Firebase/FCM push + SignalR real-time updates</li>
           <li>Config-driven pricing, discounts &amp; feature flags</li>
+          <li>Prescription upload, PDF results, WhatsApp support</li>
         </ul>
-        <div class="tag-row"><span class="tag">Flutter</span><span class="tag">Payments</span><span class="tag">Real-time</span></div>
+        <div class="plink-row">
+          <a class="plink" href="https://apps.apple.com/eg/app/khaled-dewan-%D8%AE%D8%A7%D9%84%D8%AF-%D8%AF%D9%8A%D9%88%D8%A7%D9%86/id6761141831" target="_blank" rel="noopener noreferrer">App Store →</a>
+          <a class="plink" href="https://play.google.com/store/apps/details?id=com.dewanscan.newapp" target="_blank" rel="noopener noreferrer">Google Play →</a>
+        </div>
+        <div class="tag-row"><span class="tag">Flutter</span><span class="tag">Radiology</span><span class="tag">Payments</span><span class="tag">Live on stores</span></div>
       </div>
 
       <div class="pcard">
@@ -656,14 +690,14 @@
     <div class="contact-box">
       <div class="eyebrow" style="justify-content:center;">Let's talk</div>
       <h2>Open to Senior / Lead engineering roles</h2>
-      <p>Full-stack .NET, React, and Angular — multi-tenant systems, performance engineering, and end-to-end healthcare platforms.</p>
+      <p>Remote only · based in Egypt · working US timezones. Full-stack .NET, React, and Angular — multi-tenant systems, performance engineering, and end-to-end healthcare platforms. Arabic &amp; English.</p>
       <div class="contact-links">
-        <a class="btn primary" href="mailto:your.email@example.com">Email me →</a>
-        <a class="btn ghost" href="#">LinkedIn</a>
-        <a class="btn ghost" href="#">GitHub</a>
+        <a class="btn primary" href="mailto:khaled.oweas@icloud.com">Email me →</a>
+        <a class="btn ghost" href="https://www.linkedin.com/in/khaledoweas" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="btn ghost" href="https://github.com/khaledOweas" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
     </div>
-    <p class="foot-note">KHALED OWEAS · SENIOR / LEAD SOFTWARE ENGINEER · BUILT WITH INTENT</p>
+    <p class="foot-note">KHALED OWEAS · SENIOR / LEAD SOFTWARE ENGINEER · REMOTE · EGYPT</p>
   </div>
 </footer>
 
@@ -675,6 +709,21 @@
     });
   }, {threshold:0.12});
   revealEls.forEach(el=>io.observe(el));
+
+  const navToggle = document.querySelector('.nav-toggle');
+  const navLinks = document.getElementById('nav-links');
+  if(navToggle && navLinks){
+    navToggle.addEventListener('click', ()=>{
+      const open = navLinks.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    navLinks.querySelectorAll('a').forEach(a=>{
+      a.addEventListener('click', ()=>{
+        navLinks.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
 </script>
 
 </body>
