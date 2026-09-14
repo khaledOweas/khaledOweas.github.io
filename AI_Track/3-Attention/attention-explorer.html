@@ -75,15 +75,22 @@
     margin:22px 0 10px; display:flex; align-items:center; gap:8px;
   }
 
-  .tok-row{ display:flex; flex-wrap:wrap; gap:8px; }
-  .tok-chip{
-    font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:600;
-    padding:8px 13px; border-radius:9px; cursor:pointer; white-space:pre;
-    background:var(--bg2); color:var(--text); border:1.5px solid var(--border);
-    transition:border-color .15s, background .15s, transform .15s;
+  .tokens-box{
+    display:flex; flex-wrap:wrap; gap:6px; min-height:48px;
+    background:var(--bg2); border:1px dashed var(--border); border-radius:12px;
+    padding:14px;
   }
-  .tok-chip:hover{ border-color:var(--accent); transform:translateY(-1px); }
-  .tok-chip.selected{ background:rgba(73,201,184,0.14); border-color:var(--accent); color:var(--accent); }
+  .chip{
+    font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:600;
+    padding:4px 9px; border-radius:7px; white-space:pre;
+    border:1px solid transparent;
+  }
+  .chip.selectable{
+    cursor:pointer; background:var(--bg2); color:var(--text); border-color:var(--border);
+    transition:border-color .15s, background .15s;
+  }
+  .chip.selectable:hover{ border-color:var(--accent); }
+  .chip.selectable.selected{ background:rgba(73,201,184,0.14); border-color:var(--accent); color:var(--accent); }
 
   .rank-list{ display:flex; flex-direction:column; gap:10px; }
   .rank-item{
@@ -146,7 +153,7 @@
     <p class="model-progress" id="modelStatus">جاري تحميل نموذج الانتباه لأول مرة (~91MB)… هيتخزن كاش في المتصفح، فمن تاني مرة هيكون فوري.</p>
 
     <div class="section-title">🔤 دوس على أي كلمة</div>
-    <div class="tok-row" id="tokRow"></div>
+    <div class="tokens-box" id="tokRow"></div>
 
     <div class="section-title">📊 مين بتاخد أكتر انتباه من الكلمة المختارة</div>
     <div class="rank-list" id="rankList">
@@ -247,7 +254,7 @@
       if (SPECIAL.has(t)) return;
       const chip = document.createElement('button');
       chip.type = 'button';
-      chip.className = 'tok-chip';
+      chip.className = 'chip selectable';
       chip.textContent = t;
       chip.dataset.idx = i;
       chip.addEventListener('click', () => selectToken(i));
@@ -257,7 +264,7 @@
 
   function selectToken(idx) {
     selectedIdx = idx;
-    els.tokRow.querySelectorAll('.tok-chip').forEach((chip) => {
+    els.tokRow.querySelectorAll('.chip').forEach((chip) => {
       chip.classList.toggle('selected', Number(chip.dataset.idx) === idx);
     });
 

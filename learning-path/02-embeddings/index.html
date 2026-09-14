@@ -97,78 +97,7 @@
       <h2>طب إزاي بيتحسب "القرب" ده؟</h2>
       <p>بيستخدموا مقياس اسمه <b>Cosine Similarity</b>: بياخد اتجاه المتجهين (Vectors) ويحسب مدى تشابههم. النتيجة رقم من -1 لـ 1: كل ما اقترب من 1 يبقى المعنى متشابه أكتر، وكل ما اقترب من صفر يبقى مفيش علاقة تقريبًا.</p>
 
-      <svg class="concept-diagram" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="رسم توضيحي: كلمات موزّعة في مساحة المعنى، الكلمات المتشابهة زي قطة وكلب وأسد قريبة من بعض، بعيدة عن كلمات غير مرتبطة زي بيتزا أو كود">
-        <defs>
-          <radialGradient id="gTeal" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#49C9B8" stop-opacity="0.22"/>
-            <stop offset="100%" stop-color="#49C9B8" stop-opacity="0"/>
-          </radialGradient>
-          <radialGradient id="gWarm" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#F0997B" stop-opacity="0.20"/>
-            <stop offset="100%" stop-color="#F0997B" stop-opacity="0"/>
-          </radialGradient>
-          <radialGradient id="gPurple" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#AFA9EC" stop-opacity="0.20"/>
-            <stop offset="100%" stop-color="#AFA9EC" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-
-        <rect x="1" y="1" width="1198" height="628" rx="28" fill="#0C1219" stroke="#1A2430" stroke-width="2"/>
-
-        <ellipse cx="940" cy="230" rx="230" ry="170" fill="url(#gTeal)"/>
-        <ellipse cx="220" cy="520" rx="230" ry="160" fill="url(#gWarm)"/>
-        <ellipse cx="640" cy="470" rx="230" ry="160" fill="url(#gPurple)"/>
-
-        <circle cx="44" cy="44" r="5" fill="#49C9B8"/>
-        <text x="58" y="49" class="mono" font-size="15" letter-spacing="2" fill="#49C9B8">EKOAI · LEARNING PATH</text>
-
-        <text x="44" y="102" class="display" font-weight="800" font-size="42" fill="#EEF2F6">Embeddings</text>
-        <text x="44" y="136" font-size="21" fill="#8B9AAB">لما الكلام يتحول لإحداثيات في مساحة المعنى</text>
-
-        <line x1="860" y1="330" x2="980" y2="190" stroke="#49C9B8" stroke-width="2.5" stroke-dasharray="6 6" opacity="0.85"/>
-        <line x1="860" y1="330" x2="180" y2="500" stroke="#5A6A7A" stroke-width="2" stroke-dasharray="6 6" opacity="0.55"/>
-
-        <g>
-          <rect x="898" y="243" width="52" height="26" rx="8" fill="#0C1219" stroke="#49C9B8" stroke-width="1.5"/>
-          <text x="924" y="260" class="mono" font-size="13" font-weight="600" fill="#6EEAD8" text-anchor="middle">0.86</text>
-        </g>
-        <g>
-          <rect x="493" y="408" width="52" height="26" rx="8" fill="#0C1219" stroke="#243040" stroke-width="1.5"/>
-          <text x="519" y="425" class="mono" font-size="13" font-weight="600" fill="#8B9AAB" text-anchor="middle">0.09</text>
-        </g>
-
-        <circle cx="860" cy="330" r="10" fill="#0C1219" stroke="#6EEAD8" stroke-width="3"/>
-        <text x="878" y="335" font-size="17" font-weight="600" fill="#EEF2F6">"قطة صغيرة" ← اللي كتبته</text>
-
-        <circle cx="980" cy="190" r="7" fill="#5DCAA5"/>
-        <text x="998" y="195" font-size="17" fill="#d7dbe2">قطة</text>
-        <circle cx="900" cy="175" r="7" fill="#5DCAA5"/>
-        <text x="918" y="180" font-size="17" fill="#d7dbe2">كلب</text>
-        <circle cx="945" cy="288" r="7" fill="#5DCAA5"/>
-        <text x="963" y="293" font-size="17" fill="#d7dbe2">أسد</text>
-
-        <circle cx="180" cy="500" r="7" fill="#F0997B"/>
-        <text x="198" y="505" font-size="17" fill="#d7dbe2">بيتزا</text>
-        <circle cx="260" cy="545" r="7" fill="#F0997B"/>
-        <text x="278" y="550" font-size="17" fill="#d7dbe2">برجر</text>
-        <circle cx="150" cy="560" r="7" fill="#F0997B"/>
-        <text x="90" y="578" font-size="17" fill="#d7dbe2">كيكة</text>
-
-        <circle cx="600" cy="450" r="7" fill="#AFA9EC"/>
-        <text x="618" y="455" font-size="17" fill="#d7dbe2">دالة</text>
-        <circle cx="700" cy="495" r="7" fill="#AFA9EC"/>
-        <text x="718" y="500" font-size="17" fill="#d7dbe2">خوارزمية</text>
-        <circle cx="560" cy="515" r="7" fill="#AFA9EC"/>
-        <text x="500" y="538" font-size="17" fill="#d7dbe2">كود</text>
-
-        <circle cx="44" cy="612" r="6" fill="#5DCAA5"/>
-        <text x="58" y="617" class="mono" font-size="13" fill="#8B9AAB">حيوانات</text>
-        <circle cx="190" cy="612" r="6" fill="#F0997B"/>
-        <text x="204" y="617" class="mono" font-size="13" fill="#8B9AAB">أكل</text>
-        <circle cx="300" cy="612" r="6" fill="#AFA9EC"/>
-        <text x="314" y="617" class="mono" font-size="13" fill="#8B9AAB">برمجة</text>
-      </svg>
-      <p class="hint" style="margin-top:-8px;">الأقرب مكانيًا على الخريطة = الأقرب في المعنى. لاحظ إن "قطة صغيرة" قريبة من "قطة" (0.86) لكنها بعيدة عن "بيتزا" (0.09) — بالظبط زي الجملة اللي هتجربها تحت في الديمو.</p>
+      <p>مثال حقيقي: لو كتبت "قطة صغيرة"، Cosine Similarity بينها وبين "قطة" بيوصل لـ 0.86 — لكن بينها وبين "بيتزا" بيوصل لـ 0.09 بس. بالظبط زي الجملة اللي هتجربها تحت في الديمو.</p>
 
       <h2>طب الإحداثيات دي جايه منين؟</h2>
       <p>النموذج بيتدرب على كميات ضخمة من النصوص، وبيتعلم إن الكلمات اللي بتيجي في سياقات متشابهة يبقى ليها إحداثيات قريبة من بعض. مفيش حد كاتب الإحداثيات دي يدويًا؛ النموذج هو اللي بيكتشفها من البيانات لوحده.</p>

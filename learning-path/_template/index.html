@@ -7,31 +7,38 @@
   2. In this file, replace every {{PLACEHOLDER}} and the sample <article>/
      demo-card content below with the real lesson.
 
-     Hero image, two options:
-     a) Photo/infographic: drop an optimized JPEG/PNG next to this file
-        (e.g. `hero.jpg`, keep originals in AI_Track/) and add
-          <img class="post-hero" src="./hero.jpg" width="…" height="…" alt="…">
-        as the first line inside <article class="post">.
-     b) Hand-drawn diagram: author it as inline SVG (see
-        02-embeddings/index.html for a full example — a "concept map"
-        scatter diagram) wrapped as
-          <svg class="concept-diagram" viewBox="0 0 1200 630" role="img" aria-label="…">…</svg>
-        `.concept-diagram` already sets `direction:ltr` in
-        learning-path.css — needed because an LTR-authored viewBox
-        (fixed x/y coordinates) gets its content clipped by some
-        browsers when it inherits `dir="rtl"` from the Arabic
-        <article> wrapper. Don't remove that rule, and don't rely on
-        dir=rtl for a diagram's own text — pick each <text> element's
-        position explicitly instead.
-        For the OG image, render the same SVG standalone at exactly
-        1200x630 via headless Chrome for a pixel-exact, deterministic
-        capture (interactive window-resize + screenshot is not
-        reliable for exact dimensions):
-          google-chrome --headless --disable-gpu --hide-scrollbars \
-            --window-size=1200,630 --screenshot=og-image.png file.html
-        then `sips -s format jpeg og-image.png --out og-image.jpg`.
+     Hero image: drop an optimized JPEG/PNG next to this file (e.g.
+     `hero.jpg`, keep originals in AI_Track/) and add
+        <img class="post-hero" src="./hero.jpg" width="…" height="…" alt="…">
+     as the first line inside <article class="post">. For the OG
+     preview image, if the source art is portrait, letterbox it onto
+     the site's --bg color at exactly 1200x630 rather than cropping:
+        sips -s format jpeg -Z 630 source.png --out /tmp/scaled.jpg
+        sips -p 630 1200 --padColor 070B10 /tmp/scaled.jpg --out og-image.jpg
+
+     Don't build a bespoke illustration (a custom SVG diagram, a
+     one-off canvas, etc.) even if no photo is available yet — lessons
+     01/02/03 tried that once (a hand-authored SVG "concept diagram")
+     and it read as an inconsistent, separate visual style across the
+     site, plus it hit a real cross-browser color/clipping bug. If a
+     lesson needs to illustrate something before a real photo shows up,
+     say it in words (a <p>, a <div class="callout">) using the post's
+     normal typography, or wait for the photo — don't invent a new
+     visual component. Every lesson's diagrams/illustrations should be
+     photos (post-hero) or nothing; keep the visual language limited to
+     what's already in learning-path.css (nav/hero/post/callout/
+     demo-card/tokens-box+chip/rank-list) rather than adding new
+     one-off styled elements.
   3. If the lesson needs an interactive demo, build it in the inline
-     <script> at the bottom. Two proven patterns to reuse:
+     <script> at the bottom, reusing the shared UI pieces already in
+     learning-path.css rather than inventing new ones: `.tokens-box` +
+     `.chip` for a row of token pieces (add `.chip.selectable` if a
+     chip needs to be clickable, `.selected` for the active one — see
+     03-attention's Attention Explorer), `.rank-list`/`.rank-item` for
+     any "ranked by a score" list (similarity, attention weight,
+     whatever — see 02-embeddings and 03-attention), `.controls` +
+     `.example-btn` for preset-example buttons, `.model-progress` for
+     the loading-status line. Two proven data patterns:
        - Tokenizer-style (01-tiktokenization): loads a small data file
          (js-tiktoken's merge tables) via `fetch`, all pure JS, no ML
          runtime needed.

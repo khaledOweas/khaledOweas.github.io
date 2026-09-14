@@ -310,22 +310,6 @@ nav .wrap{
   border:1px solid var(--line-soft);
   margin-bottom:26px;
 }
-.concept-diagram{
-  display:block;
-  direction:ltr;
-  width:100%;
-  height:auto;
-  border-radius:16px;
-  margin-bottom:26px;
-}
-.concept-diagram text{font-family:var(--font-arabic);}
-.concept-diagram .mono{font-family:var(--font-mono);}
-.concept-diagram .display{font-family:var(--font-display);}
-.concept-diagram .chip-box{fill:var(--bg-alt); stroke:var(--line); stroke-width:1.5;}
-.concept-diagram .chip-box.src{fill:var(--accent-soft); stroke:var(--accent); stroke-width:2;}
-.concept-diagram .chip-box.tgt{stroke:var(--accent); stroke-width:1.5;}
-.concept-diagram .chip-txt{fill:var(--text); font-size:19px; font-weight:600;}
-
 .rank-list{display:flex; flex-direction:column; gap:10px; margin-top:4px;}
 .rank-item{
   display:flex; align-items:center; gap:12px;
@@ -353,15 +337,6 @@ nav .wrap{
 }
 .model-progress.error{color:var(--danger);}
 
-.tok-row{display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 0;}
-.tok-chip{
-  font-family:var(--font-mono); font-size:14px; font-weight:600;
-  padding:8px 13px; border-radius:9px; cursor:pointer; white-space:pre;
-  background:var(--bg-alt); color:var(--text); border:1.5px solid var(--line-soft);
-  transition:border-color .15s, background .15s, transform .15s;
-}
-.tok-chip:hover{border-color:var(--accent-line); transform:translateY(-1px);}
-.tok-chip.selected{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-bright);}
 .post h2{
   font-family:var(--font-arabic);
   font-size:22px;
@@ -440,6 +415,12 @@ textarea:focus{border-color:var(--accent);}
   padding:4px 9px; border-radius:7px; white-space:pre;
   border:1px solid transparent;
 }
+.chip.selectable{
+  cursor:pointer; background:var(--bg-alt); color:var(--text); border-color:var(--line-soft);
+  transition:border-color .15s, background .15s;
+}
+.chip.selectable:hover{border-color:var(--accent-line);}
+.chip.selectable.selected{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-bright);}
 .placeholder, .loading{color:var(--text-dim); font-size:14px; padding:6px; font-family:var(--font-arabic);}
 .error{color:var(--danger); font-size:14px; text-align:center; padding:20px; font-family:var(--font-arabic);}
 .hint{

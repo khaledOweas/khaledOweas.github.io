@@ -99,57 +99,7 @@
       <p>كل كلمة بتعمل 3 حاجات: <b>Query</b> (سؤال: أنا بدوّر على إيه؟)، <b>Key</b> (إجابة مختصرة: أنا عندي إيه؟)، <b>Value</b> (المحتوى الفعلي بتاعها).</p>
       <p>النموذج بيقارن الـ Query بتاع كل كلمة مع الـ Key بتاع كل الكلمات التانية، يطلع منها درجات تشابه (Attention Scores)، وبعدين بيجمع الـ Values موزونة بالدرجات دي. النتيجة: تمثيل جديد للكلمة، مبني على السياق اللي هي فيه — مش بس معناها المعزول.</p>
 
-      <svg class="concept-diagram" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="رسم توضيحي: كلمة it متصلة بخطوط متفاوتة السُمك بكلمات cat وtired وstreet وcross، سُمك الخط بيعبّر عن قوة الانتباه الحقيقية المقاسة من النموذج">
-        <defs>
-          <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#49C9B8" stop-opacity="0.14"/>
-            <stop offset="100%" stop-color="#49C9B8" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-
-        <rect x="1" y="1" width="1198" height="628" rx="28" fill="#0C1219" stroke="#1A2430" stroke-width="2"/>
-        <ellipse cx="700" cy="380" rx="420" ry="220" fill="url(#gGlow)"/>
-
-        <circle cx="44" cy="44" r="5" fill="#49C9B8"/>
-        <text x="58" y="49" class="mono" font-size="15" letter-spacing="2" fill="#49C9B8">EKOAI · LEARNING PATH</text>
-        <text x="44" y="102" class="display" font-weight="800" font-size="42" fill="#EEF2F6">Attention</text>
-        <text x="44" y="136" font-size="21" fill="#8B9AAB">كل كلمة بتقرر تركز على إيه في الجملة</text>
-
-        <path d="M798.5,410 Q526.8,272.2 255.0,410" fill="none" stroke="#49C9B8" stroke-width="4.83" opacity="0.87"/>
-        <path d="M798.5,410 Q873.2,343.1 948.0,410" fill="none" stroke="#49C9B8" stroke-width="3.71" opacity="0.72"/>
-        <path d="M798.5,410 Q702.5,335.4 606.5,410" fill="none" stroke="#49C9B8" stroke-width="2.96" opacity="0.62"/>
-        <path d="M798.5,410 Q618.2,305.1 438.0,410" fill="none" stroke="#49C9B8" stroke-width="2.28" opacity="0.52"/>
-
-        <text x="526.8" y="262" text-anchor="middle" class="mono" font-size="13" font-weight="600" fill="#6EEAD8">0.174</text>
-        <text x="873.2" y="333" text-anchor="middle" class="mono" font-size="12" font-weight="600" fill="#9FE1CB">0.123</text>
-        <text x="702.5" y="326" text-anchor="middle" class="mono" font-size="12" font-weight="600" fill="#8fcdbf">0.089</text>
-        <text x="618.2" y="296" text-anchor="middle" class="mono" font-size="11" font-weight="600" fill="#7fb8ab">0.058</text>
-
-        <rect x="155.0" y="410" width="56.0" height="46" rx="10" class="chip-box"/>
-        <text x="183.0" y="439.0" text-anchor="middle" class="chip-txt">The</text>
-        <rect x="227.0" y="410" width="56.0" height="46" rx="10" class="chip-box tgt"/>
-        <text x="255.0" y="439.0" text-anchor="middle" class="chip-txt">cat</text>
-        <rect x="299.0" y="410" width="85.0" height="46" rx="10" class="chip-box"/>
-        <text x="341.5" y="439.0" text-anchor="middle" class="chip-txt">didn't</text>
-        <rect x="400.0" y="410" width="76.0" height="46" rx="10" class="chip-box tgt"/>
-        <text x="438.0" y="439.0" text-anchor="middle" class="chip-txt">cross</text>
-        <rect x="492.0" y="410" width="56.0" height="46" rx="10" class="chip-box"/>
-        <text x="520.0" y="439.0" text-anchor="middle" class="chip-txt">the</text>
-        <rect x="564.0" y="410" width="85.0" height="46" rx="10" class="chip-box tgt"/>
-        <text x="606.5" y="439.0" text-anchor="middle" class="chip-txt">street</text>
-        <rect x="665.0" y="410" width="94.0" height="46" rx="10" class="chip-box"/>
-        <text x="712.0" y="439.0" text-anchor="middle" class="chip-txt">because</text>
-        <rect x="775.0" y="410" width="47.0" height="46" rx="10" class="chip-box src"/>
-        <text x="798.5" y="439.0" text-anchor="middle" class="chip-txt">it</text>
-        <rect x="838.0" y="410" width="56.0" height="46" rx="10" class="chip-box"/>
-        <text x="866.0" y="439.0" text-anchor="middle" class="chip-txt">was</text>
-        <rect x="910.0" y="410" width="76.0" height="46" rx="10" class="chip-box tgt"/>
-        <text x="948.0" y="439.0" text-anchor="middle" class="chip-txt">tired</text>
-
-        <text x="600" y="500" text-anchor="middle" font-size="16" fill="#8B9AAB">"it" ← سُمك الخط بيدل على قوة انتباهها ناحية كل كلمة تانية</text>
-        <text x="600" y="600" text-anchor="middle" class="mono" font-size="12" fill="#5A6A7A">REAL DATA · LAST LAYER · AVG OF 12 HEADS · all-MiniLM-L6-v2</text>
-      </svg>
-      <p class="hint" style="margin-top:-8px;">مثال حقيقي: في جملة "The cat didn't cross the street because it was tired"، كلمة "it" فعلًا بتاخد أعلى وزن انتباه ناحية "cat" — جرّب بنفسك في الديمو تحت.</p>
+      <p>مثال حقيقي: في جملة <span dir="ltr">"The cat didn't cross the street because it was tired"</span>، كلمة "it" فعلًا بتاخد أعلى وزن انتباه ناحية "cat" — جرّب بنفسك في الديمو تحت.</p>
 
       <h2>مش رأس واحد بس (Multi-Head Attention)</h2>
       <p>النموذج بيعمل العملية دي كذا مرة بالتوازي، كل مرة اسمها <b>Head</b>. كل Head ممكن يركّز على نوع علاقة مختلف — شوية بيمسكوا القواعد، شوية بيمسكوا المرجعية (زي مين "it" بترجعله)، شوية بيمسكوا المعنى العام.</p>
@@ -189,7 +139,7 @@
       <p class="model-progress" id="modelStatus">جاري تحميل نموذج الانتباه لأول مرة (~91MB — أكبر من قبل لأنه بيصدّر أوزان الانتباه الداخلية كمان)… هيتخزن كاش في المتصفح، فمن تاني مرة هيكون فوري.</p>
 
       <div class="section-title">🔤 دوس على أي كلمة</div>
-      <div class="tok-row" id="tokRow"></div>
+      <div class="tokens-box" id="tokRow"></div>
 
       <div class="section-title">📊 مين بتاخد أكتر انتباه من الكلمة المختارة</div>
       <div class="rank-list" id="rankList">
@@ -300,7 +250,7 @@
       if (SPECIAL.has(t)) return;
       const chip = document.createElement('button');
       chip.type = 'button';
-      chip.className = 'tok-chip';
+      chip.className = 'chip selectable';
       chip.textContent = t;
       chip.dataset.idx = i;
       chip.addEventListener('click', () => selectToken(i));
@@ -310,7 +260,7 @@
 
   function selectToken(idx) {
     selectedIdx = idx;
-    els.tokRow.querySelectorAll('.tok-chip').forEach((chip) => {
+    els.tokRow.querySelectorAll('.chip').forEach((chip) => {
       chip.classList.toggle('selected', Number(chip.dataset.idx) === idx);
     });
 
