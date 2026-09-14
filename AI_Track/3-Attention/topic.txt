@@ -1,0 +1,52 @@
+🧠 إزاي الـ AI بيقرر يركّز على إيه في الجملة؟
+في المقال اللي فات اتكلمنا إن كل كلمة بتتحول لـ Vector (إحداثيات) بيوصف معناها. لكن فيه مشكلة: نفس الكلمة ممكن يتغيّر دورها حسب الجملة اللي جايه فيها.
+مثال: "it" في جملة "The cat didn't cross the street because it was tired" — كلمة "it" مالهاش معنى لوحدها؛ لازم تعرف إنها بترجع لـ "cat" مش لـ "street".
+هنا يجي دور الـ Attention: آلية بتخلي كل كلمة "تبص" على باقي كلمات الجملة، وتقرر إمّا تدّي كل كلمة فيهم وزن (Weight) حسب أهميتها ليها.
+طب ده بيشتغل إزاي؟
+كل كلمة بتعمل 3 حاجات: Query (سؤال: أنا بدوّر على إيه؟)، Key (إجابة مختصرة: أنا عندي إيه؟)، Value (المحتوى الفعلي بتاعها).
+النموذج بيقارن الـ Query بتاع كل كلمة مع الـ Key بتاع كل الكلمات التانية، يطلع منها درجات تشابه (Attention Scores)، وبعدين بيجمع الـ Values موزونة بالدرجات دي.
+النتيجة: تمثيل جديد للكلمة، مبني على السياق اللي هي فيه — مش بس معناها المعزول.
+مش رأس واحد بس (Multi-Head Attention)
+النموذج بيعمل العملية دي كذا مرة بالتوازي، كل مرة اسمها "Head". كل Head ممكن يركّز على نوع علاقة مختلف — شوية بيمسكوا القواعد، شوية بيمسكوا المرجعية (زي مين "it" بترجعله)، شوية بيمسكوا المعنى العام.
+فرق مهم عن الـ Embeddings
+الـ Embeddings (المقال اللي فات) بتديك تمثيل شبه ثابت للكلمة. أما الـ Attention Weights فبتتحسب من جديد لكل جملة تكتبها — نفس الكلمة ممكن يبقى ليها نمط انتباه مختلف تمامًا حسب اللي حواليها.
+طب ده بيتستخدم فين؟
+الـ Attention هي جوهر الـ Transformer — المعمارية اللي بُنيت عليها GPT وClaude وكل نماذج اللغة الحديثة (من ورقة بحثية اسمها "Attention Is All You Need"، 2017).
+كل ما الجملة (أو الـ Context Window) تطول، عدد المقارنات اللي لازم النموذج يعملها بيكبر بسرعة (تربيعيًا) — عشان كده الـ Context الطويل مكلف حسابيًا.
+في الـ RAG، لما النموذج "يدوّر" في مستنداتك، هو فعليًا بيعمل Attention بين سؤالك والمستندات المسترجَعة.
+ملحوظة مهمة (أمانة علمية)
+نموذج صغير زي اللي في الديمو تحت مش دايمًا بيدّي نمط انتباه بديهي 100%. أحيانًا بيمسك العلاقة المتوقعة (زي "it" اللي بترجع لـ"cat")، وأحيانًا الأنماط بتكون أعقد من كده. دي حاجة باحثين الـ NLP لسه بيناقشوها — إن الانتباه مش دايمًا = تفسير كامل لقرار النموذج.
+الخلاصة
+الـ Attention هي اللي بتخلي كل كلمة تفهم نفسها في سياق الجملة، مش لوحدها. من غيرها، مكانش هيبقى فيه Transformers ولا GPT ولا Claude زي ما احنا عارفينهم.
+
+#EKOAI
+
+---
+Mini-project notes:
+"Attention Explorer" — type any English sentence, click any token, see a
+live ranked list of which other tokens it attends to most (real attention
+weights, last transformer layer, averaged across all 12 heads).
+
+Model: bradynapier/all_miniLM_L6_v2_with_attentions_onnx (ONNX export of
+Qdrant/all_miniLM_L6_v2_with_attentions, specifically built for
+transformers.js with attention outputs exposed as attention_1..attention_6
+in the model output — the standard Xenova/all-MiniLM-L6-v2 export used in
+Lesson 02 does NOT expose attentions; had to find/verify a repo that does).
+~91MB fp32 (no quantized variant available for this repo) — heavier than
+Lessons 01/02, disclosed clearly in the UI. Cached after first load.
+
+Empirically verified before writing any copy (see session transcript):
+- "The cat didn't cross the street because it was tired" -> "it" attends
+  most to: cat (0.174), tired (0.123), street (0.089), cross (0.058)
+  [CLS]/[SEP] excluded from ranking, they dominate raw scores as expected
+  attention sinks in BERT-style models.
+- Tried the classic Winograd-style flip ("...because it was too wide" vs
+  "...too big" with trophy/suitcase) — this small model does NOT reproduce
+  the context-dependent flip a large LLM would show. Decided not to build
+  the lesson's central claim around that, to stay honest. Kept the
+  cat/street/tired example (still a genuine, correct pronoun->antecedent
+  result) and added an explicit "attention isn't always fully intuitive"
+  caveat instead of overpromising.
+- Other verified examples: adjective->noun ("car" attends most to "red"
+  in "The red car is very fast"), verb->arguments ("chased" attends to
+  "frightened"/"dog"/"cat" in "The dog chased the frightened cat").

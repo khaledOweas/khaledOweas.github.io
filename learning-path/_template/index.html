@@ -46,6 +46,28 @@
          folder on huggingface.co before committing to one — sizes
          vary 5-10x between variants of the "same" model) so the first
          load stays reasonable; it's cached by the browser afterward.
+       - Model internals in the browser (03-attention): a standard
+         feature-extraction export only returns pooled output —
+         `AutoModel.from_pretrained(id, {output_attentions:true})` is
+         silently ignored if the ONNX graph itself wasn't exported with
+         those tensors. Some repos expose a `revision: "output_attentions"`
+         branch (see the transformers.js docs' whisper example); most
+         don't. Search `https://huggingface.co/api/models?search=with-attentions`
+         for a repo already exported for this (e.g. the
+         bradynapier/*_with_attentions_onnx family). Such repos are
+         usually small/unofficial single-contributor uploads with no
+         quantized variant (expect ~90MB+, fp32 only) — disclose the
+         size honestly in the UI, same as any dependency risk already
+         accepted for the CDNs. Output keys are then named
+         `attention_1`..`attention_N` (one per layer), not a single
+         `.attentions` array — dims are `[batch, heads, seq, seq]`.
+       Whatever a demo claims about the model's behavior, verify it
+       empirically first (a throwaway test page) rather than assuming —
+       e.g. small distilled models often do NOT reproduce textbook
+       results like Winograd-schema pronoun disambiguation the way a
+       full-size LLM would. Build the lesson's narrative around what you
+       actually measured, and say so plainly if a classic example
+       doesn't hold up — that's a real, honest finding, not a failure.
      Keep raw drafts / standalone single-file demos under
      AI_Track/<N>-<Slug>/ and link out to them from .demo-foot, same as
      Lesson 01 does with token-counter.html.

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attention — Learning Path — Khaled Oweas</title>
+<meta name="description" content="Lesson 03 of the EKOAI learning path: how language models decide which words to focus on when reading a sentence, with a live attention explorer running entirely in the browser.">
+<meta name="author" content="Khaled Oweas">
+<link rel="canonical" href="https://khaledoweas.github.io/learning-path/03-attention/">
+
+<!-- Open Graph / LinkedIn preview -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Khaled Oweas — EKOAI Learning Path">
+<meta property="og:title" content="Attention — how AI decides what to focus on">
+<meta property="og:description" content="How language models let every word look at the rest of the sentence and decide what matters. With a live attention explorer using real, measured weights.">
+<meta property="og:url" content="https://khaledoweas.github.io/learning-path/03-attention/">
+<meta property="og:image" content="https://khaledoweas.github.io/learning-path/03-attention/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Diagram: the word 'it' connected by weighted arcs to 'cat', 'tired', 'street' and 'cross' in a sentence, arc thickness showing real measured attention strength">
+
+<!-- Twitter/X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Attention — how AI decides what to focus on">
+<meta name="twitter:description" content="Every word looks at the rest of the sentence and decides what matters. Try the live attention explorer.">
+<meta name="twitter:image" content="https://khaledoweas.github.io/learning-path/03-attention/og-image.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/learning-path.css">
+</head>
+<body>
+<div class="aurora" aria-hidden="true"></div>
+<div class="grid-overlay" aria-hidden="true"></div>
+
+<div class="page">
+<nav>
+  <div class="wrap">
+    <a class="nav-mark" href="../../index.html"><span class="dot"></span>KHALED.OWEAS</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <div class="nav-links" id="nav-links">
+      <a href="../../index.html#about">About</a>
+      <a href="../../index.html#experience">Experience</a>
+      <a href="../../index.html#products">Products</a>
+      <a href="../../index.html#projects">Projects</a>
+      <a href="../../index.html#skills">Capabilities</a>
+      <a href="../../index.html#education">Education</a>
+      <a href="../" aria-current="page">Learning Path</a>
+      <a href="../../index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="lesson" id="lesson-03">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="../">← Learning Path</a></div>
+    <div class="lesson-head">
+      <div>
+        <div class="eyebrow">Lesson 03</div>
+        <h1>Attention</h1>
+      </div>
+      <a class="btn ghost" href="#demo">Try the live example →</a>
+    </div>
+
+    <div class="share-bar" aria-label="Share this lesson" data-share
+         data-share-url="https://khaledoweas.github.io/learning-path/03-attention/"
+         data-share-text="Attention: how AI decides what to focus on in a sentence 🧠 — try the live demo">
+      <span class="share-label">Share</span>
+      <a class="share-btn" data-share-linkedin target="_blank" rel="noopener" aria-label="Share on LinkedIn" title="Share on LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/></svg>
+      </a>
+      <a class="share-btn" data-share-x target="_blank" rel="noopener" aria-label="Share on X" title="Share on X">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a class="share-btn" data-share-facebook target="_blank" rel="noopener" aria-label="Share on Facebook" title="Share on Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103.401.048.816.113 1.141.195v3.325a8.62 8.62 0 0 0-.653-.036 3.887 3.887 0 0 0-.653-.055c-.61 0-1.153.09-1.611.376-.363.226-.65.53-.774.895-.14.416-.184.912-.184 1.416v1.34h3.629l-.478 3.667h-3.152v7.98H9.101z"/></svg>
+      </a>
+      <a class="share-btn" data-share-whatsapp target="_blank" rel="noopener" aria-label="Share on WhatsApp" title="Share on WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.007 2C6.505 2 2.036 6.469 2.036 11.972c0 1.762.462 3.48 1.34 4.994L2 22l5.146-1.35a9.936 9.936 0 0 0 4.858 1.239h.004c5.502 0 9.97-4.47 9.97-9.973 0-2.663-1.037-5.166-2.922-7.05A9.897 9.897 0 0 0 12.008 2zm0 18.253a8.27 8.27 0 0 1-4.213-1.155l-.302-.18-3.132.822.836-3.056-.198-.314a8.264 8.264 0 0 1-1.268-4.398c0-4.567 3.717-8.284 8.285-8.284a8.23 8.23 0 0 1 5.858 2.429 8.226 8.226 0 0 1 2.421 5.858c0 4.568-3.717 8.278-8.287 8.278z"/></svg>
+      </a>
+      <button type="button" class="share-btn" data-copy-link aria-label="Copy link" title="Copy link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <span class="copied-text">Copied!</span>
+      </button>
+    </div>
+
+    <article class="post" lang="ar" dir="rtl">
+      <img class="post-hero" src="./hero.jpg" width="800" height="1000" alt="رسم توضيحي: كل كلمة في جملة الكلب طارد القطة عشان كان زعلان متصلة بخطوط انتباه، وشرح لمفاهيم Query وKey وValue، وتوضيح إن وقت التوليد الكلام اللي فات متاح والكلام اللي جاي محجوب" loading="eager" decoding="async">
+
+      <h1>إزاي الـ AI بيقرر يركّز على إيه في الجملة؟</h1>
+      <p class="subtitle">كل كلمة بتفهم نفسها بمعرفة اللي حواليها</p>
+
+      <p>في <a href="../02-embeddings/">المقال اللي فات</a> اتكلمنا إن كل كلمة بتتحول لـ Vector بيوصف معناها. لكن فيه مشكلة: نفس الكلمة ممكن يتغيّر دورها حسب الجملة اللي جايه فيها.</p>
+      <p>مثال: كلمة <b>it</b> في جملة <span dir="ltr">"The cat didn't cross the street because it was tired"</span> — مالهاش معنى لوحدها؛ لازم النموذج يفهم إنها بترجع لـ <b>cat</b> مش لـ <b>street</b>.</p>
+      <div class="callout">هنا يجي دور الـ <b>Attention</b>: آلية بتخلي كل كلمة "تبص" على باقي كلمات الجملة، وتقرر تدّي كل كلمة فيهم وزن (Weight) حسب أهميتها ليها وقت فهمها.</div>
+
+      <h2>طب ده بيشتغل إزاي؟</h2>
+      <p>كل كلمة بتعمل 3 حاجات: <b>Query</b> (سؤال: أنا بدوّر على إيه؟)، <b>Key</b> (إجابة مختصرة: أنا عندي إيه؟)، <b>Value</b> (المحتوى الفعلي بتاعها).</p>
+      <p>النموذج بيقارن الـ Query بتاع كل كلمة مع الـ Key بتاع كل الكلمات التانية، يطلع منها درجات تشابه (Attention Scores)، وبعدين بيجمع الـ Values موزونة بالدرجات دي. النتيجة: تمثيل جديد للكلمة، مبني على السياق اللي هي فيه — مش بس معناها المعزول.</p>
+
+      <svg class="concept-diagram" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="رسم توضيحي: كلمة it متصلة بخطوط متفاوتة السُمك بكلمات cat وtired وstreet وcross، سُمك الخط بيعبّر عن قوة الانتباه الحقيقية المقاسة من النموذج">
+        <defs>
+          <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#49C9B8" stop-opacity="0.14"/>
+            <stop offset="100%" stop-color="#49C9B8" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <rect x="1" y="1" width="1198" height="628" rx="28" fill="#0C1219" stroke="#1A2430" stroke-width="2"/>
+        <ellipse cx="700" cy="380" rx="420" ry="220" fill="url(#gGlow)"/>
+
+        <circle cx="44" cy="44" r="5" fill="#49C9B8"/>
+        <text x="58" y="49" class="mono" font-size="15" letter-spacing="2" fill="#49C9B8">EKOAI · LEARNING PATH</text>
+        <text x="44" y="102" class="display" font-weight="800" font-size="42" fill="#EEF2F6">Attention</text>
+        <text x="44" y="136" font-size="21" fill="#8B9AAB">كل كلمة بتقرر تركز على إيه في الجملة</text>
+
+        <path d="M798.5,410 Q526.8,272.2 255.0,410" fill="none" stroke="#49C9B8" stroke-width="4.83" opacity="0.87"/>
+        <path d="M798.5,410 Q873.2,343.1 948.0,410" fill="none" stroke="#49C9B8" stroke-width="3.71" opacity="0.72"/>
+        <path d="M798.5,410 Q702.5,335.4 606.5,410" fill="none" stroke="#49C9B8" stroke-width="2.96" opacity="0.62"/>
+        <path d="M798.5,410 Q618.2,305.1 438.0,410" fill="none" stroke="#49C9B8" stroke-width="2.28" opacity="0.52"/>
+
+        <text x="526.8" y="262" text-anchor="middle" class="mono" font-size="13" font-weight="600" fill="#6EEAD8">0.174</text>
+        <text x="873.2" y="333" text-anchor="middle" class="mono" font-size="12" font-weight="600" fill="#9FE1CB">0.123</text>
+        <text x="702.5" y="326" text-anchor="middle" class="mono" font-size="12" font-weight="600" fill="#8fcdbf">0.089</text>
+        <text x="618.2" y="296" text-anchor="middle" class="mono" font-size="11" font-weight="600" fill="#7fb8ab">0.058</text>
+
+        <rect x="155.0" y="410" width="56.0" height="46" rx="10" class="chip-box"/>
+        <text x="183.0" y="439.0" text-anchor="middle" class="chip-txt">The</text>
+        <rect x="227.0" y="410" width="56.0" height="46" rx="10" class="chip-box tgt"/>
+        <text x="255.0" y="439.0" text-anchor="middle" class="chip-txt">cat</text>
+        <rect x="299.0" y="410" width="85.0" height="46" rx="10" class="chip-box"/>
+        <text x="341.5" y="439.0" text-anchor="middle" class="chip-txt">didn't</text>
+        <rect x="400.0" y="410" width="76.0" height="46" rx="10" class="chip-box tgt"/>
+        <text x="438.0" y="439.0" text-anchor="middle" class="chip-txt">cross</text>
+        <rect x="492.0" y="410" width="56.0" height="46" rx="10" class="chip-box"/>
+        <text x="520.0" y="439.0" text-anchor="middle" class="chip-txt">the</text>
+        <rect x="564.0" y="410" width="85.0" height="46" rx="10" class="chip-box tgt"/>
+        <text x="606.5" y="439.0" text-anchor="middle" class="chip-txt">street</text>
+        <rect x="665.0" y="410" width="94.0" height="46" rx="10" class="chip-box"/>
+        <text x="712.0" y="439.0" text-anchor="middle" class="chip-txt">because</text>
+        <rect x="775.0" y="410" width="47.0" height="46" rx="10" class="chip-box src"/>
+        <text x="798.5" y="439.0" text-anchor="middle" class="chip-txt">it</text>
+        <rect x="838.0" y="410" width="56.0" height="46" rx="10" class="chip-box"/>
+        <text x="866.0" y="439.0" text-anchor="middle" class="chip-txt">was</text>
+        <rect x="910.0" y="410" width="76.0" height="46" rx="10" class="chip-box tgt"/>
+        <text x="948.0" y="439.0" text-anchor="middle" class="chip-txt">tired</text>
+
+        <text x="600" y="500" text-anchor="middle" font-size="16" fill="#8B9AAB">"it" ← سُمك الخط بيدل على قوة انتباهها ناحية كل كلمة تانية</text>
+        <text x="600" y="600" text-anchor="middle" class="mono" font-size="12" fill="#5A6A7A">REAL DATA · LAST LAYER · AVG OF 12 HEADS · all-MiniLM-L6-v2</text>
+      </svg>
+      <p class="hint" style="margin-top:-8px;">مثال حقيقي: في جملة "The cat didn't cross the street because it was tired"، كلمة "it" فعلًا بتاخد أعلى وزن انتباه ناحية "cat" — جرّب بنفسك في الديمو تحت.</p>
+
+      <h2>مش رأس واحد بس (Multi-Head Attention)</h2>
+      <p>النموذج بيعمل العملية دي كذا مرة بالتوازي، كل مرة اسمها <b>Head</b>. كل Head ممكن يركّز على نوع علاقة مختلف — شوية بيمسكوا القواعد، شوية بيمسكوا المرجعية (زي مين "it" بترجعله)، شوية بيمسكوا المعنى العام.</p>
+
+      <h2>فرق مهم عن الـ Embeddings</h2>
+      <p>الـ Embeddings بتديك تمثيل شبه ثابت للكلمة. أما الـ Attention Weights فبتتحسب من جديد لكل جملة تكتبها — نفس الكلمة ممكن يبقى ليها نمط انتباه مختلف تمامًا حسب اللي حواليها.</p>
+
+      <h2>طب وقت التوليد (Generation)؟</h2>
+      <p>الديمو تحت بيوضح نوع Attention اسمه <b>Bidirectional</b> (زي BERT): كل كلمة تقدر تبص على كل الكلمات التانية، قبلها وبعدها. لكن لما GPT أو Claude بيولّدوا كلام كلمة كلمة، الوضع مختلف: كل كلمة جديدة تقدر تبص بس على الكلام اللي <b>فات</b>، مش اللي لسه هيجي — لأن اللي هيجي أصلًا لسه مش موجود.</p>
+      <p>النوع ده اسمه <b>Causal (Masked) Attention</b>: النموذج بيحجب أي كلمة قدّام الكلمة الحالية وقت الحساب. عشان كده الـ Transformers بتتقسم لنوعين: Encoders (Bidirectional، زي BERT وMiniLM اللي بنستخدمه في الديمو) وDecoders (Causal، زي GPT).</p>
+
+      <h2>طب ده بيتستخدم فين؟</h2>
+      <p>الـ Attention هي جوهر الـ <b>Transformer</b> — المعمارية اللي بُنيت عليها GPT وClaude وكل نماذج اللغة الحديثة (من ورقة بحثية اسمها "Attention Is All You Need"، 2017).</p>
+      <p>كل ما الجملة (أو الـ Context Window) تطول، عدد المقارنات اللي لازم النموذج يعملها بيكبر بسرعة (تربيعيًا) — عشان كده الـ Context الطويل مكلف حسابيًا.</p>
+      <p>في الـ RAG، لما النموذج "يدوّر" في مستنداتك، هو فعليًا بيعمل Attention بين سؤالك والمستندات المسترجَعة.</p>
+
+      <h2>ملحوظة مهمة (أمانة علمية)</h2>
+      <p>نموذج صغير زي اللي في الديمو تحت مش دايمًا بيدّي نمط انتباه بديهي 100%. أحيانًا بيمسك العلاقة المتوقعة (زي "it" اللي بترجع لـ"cat" في المثال فوق)، وأحيانًا الأنماط بتكون أعقد من كده. دي حاجة باحثين الـ NLP لسه بيناقشوها — إن الانتباه مش دايمًا = تفسير كامل لقرار النموذج.</p>
+
+      <h2>الخلاصة</h2>
+      <p>الـ Attention هي اللي بتخلي كل كلمة تفهم نفسها في سياق الجملة، مش لوحدها. من غيرها، مكانش هيبقى فيه Transformers ولا GPT ولا Claude زي ما احنا عارفينهم.</p>
+      <p class="hash">#EKOAI</p>
+    </article>
+
+    <div class="demo-card" id="demo" lang="ar" dir="rtl">
+      <h3>جرّب بنفسك: Attention Explorer</h3>
+      <p class="hint-top">اكتب جملة بالإنجليزي، دوس على أي كلمة، وشوف ترتيب باقي الكلمات حسب قوة الانتباه الحقيقية ليها — محسوبة لايف من آخر طبقة في النموذج (متوسط 12 رأس انتباه).</p>
+
+      <div class="controls">
+        <button class="example-btn" type="button" data-example="The cat didn't cross the street because it was tired">cat / street / tired</button>
+        <button class="example-btn" type="button" data-example="The red car is very fast">red car</button>
+        <button class="example-btn" type="button" data-example="The dog chased the frightened cat">dog chased cat</button>
+      </div>
+
+      <textarea id="sentenceInput" dir="ltr" lang="en" placeholder="Type any English sentence...">The cat didn't cross the street because it was tired</textarea>
+
+      <p class="model-progress" id="modelStatus">جاري تحميل نموذج الانتباه لأول مرة (~91MB — أكبر من قبل لأنه بيصدّر أوزان الانتباه الداخلية كمان)… هيتخزن كاش في المتصفح، فمن تاني مرة هيكون فوري.</p>
+
+      <div class="section-title">🔤 دوس على أي كلمة</div>
+      <div class="tok-row" id="tokRow"></div>
+
+      <div class="section-title">📊 مين بتاخد أكتر انتباه من الكلمة المختارة</div>
+      <div class="rank-list" id="rankList">
+        <div class="placeholder">استنى تحميل النموذج...</div>
+      </div>
+
+      <p class="hint">
+        <b>ملحوظة:</b> لاحظ إن كلمة زي didn't بتتقسم لأجزاء صغيرة — بالظبط زي ما اتكلمنا في <a href="../01-tiktokenization/">درس الـ Tokens</a>. والأرقام هنا Attention Weights حقيقية (مش Cosine Similarity زي درس الـ Embeddings) — بتتحسب من جديد لكل جملة، ومحسوبة بالكامل في المتصفح.
+      </p>
+
+      <div class="demo-foot" dir="ltr" lang="en">
+        <span>Runs in the browser via WebAssembly — nothing is sent to a server.</span>
+        <a href="../../AI_Track/3-Attention/attention-explorer.html">Open standalone example ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="foot-note">KHALED OWEAS · LEARNING PATH · EKOAI · LESSON 03 ATTENTION</p>
+  </div>
+</footer>
+</div>
+
+<script src="../assets/learning-path.js"></script>
+<script type="module">
+  import { AutoTokenizer, AutoModel } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.0';
+
+  const MODEL_ID = 'bradynapier/all_miniLM_L6_v2_with_attentions_onnx';
+  const SPECIAL = new Set(['[CLS]', '[SEP]']);
+
+  const els = {
+    input: document.getElementById('sentenceInput'),
+    status: document.getElementById('modelStatus'),
+    tokRow: document.getElementById('tokRow'),
+    rankList: document.getElementById('rankList'),
+  };
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  let tokenizer = null;
+  let model = null;
+  let requestSeq = 0;
+
+  // Current analysis state
+  let currentTokens = [];   // full token list incl. [CLS]/[SEP]
+  let currentMatrix = [];   // [seqLen][seqLen] averaged attention
+  let selectedIdx = null;   // index into currentTokens
+
+  async function init() {
+    try {
+      tokenizer = await AutoTokenizer.from_pretrained(MODEL_ID);
+      model = await AutoModel.from_pretrained(MODEL_ID, { dtype: 'fp32' });
+      els.status.textContent = '';
+      analyze(els.input.value);
+    } catch (err) {
+      els.status.textContent = 'حصل خطأ في تحميل النموذج — تأكد من اتصال الإنترنت وحاول تاني.';
+      els.status.classList.add('error');
+      console.error(err);
+    }
+  }
+
+  async function analyze(text) {
+    text = text.trim();
+    if (!tokenizer || !model || !text) return;
+    const myReq = ++requestSeq;
+    els.tokRow.innerHTML = '<div class="loading">بيحلل الجملة...</div>';
+    els.rankList.innerHTML = '';
+
+    const inputs = await tokenizer(text);
+    const ids = inputs.input_ids.tolist()[0];
+    const tokens = tokenizer.model.convert_ids_to_tokens(ids).map((t) => t.replace(/^##/, ''));
+    const output = await model(inputs);
+    if (myReq !== requestSeq) return; // superseded by a newer request
+
+    const attnKeys = Object.keys(output).filter((k) => k.startsWith('attention_'));
+    const lastAttn = output[attnKeys[attnKeys.length - 1]].tolist(); // [1, heads, seq, seq]
+    const heads = lastAttn[0].length;
+    const seqLen = tokens.length;
+    const matrix = Array.from({ length: seqLen }, (_, i) => {
+      const row = new Array(seqLen).fill(0);
+      for (let h = 0; h < heads; h++) {
+        for (let j = 0; j < seqLen; j++) row[j] += lastAttn[0][h][i][j] / heads;
+      }
+      return row;
+    });
+
+    currentTokens = tokens;
+    currentMatrix = matrix;
+
+    // pick a sensible default: "it" if present, else the longest content token
+    const displayIdxs = tokens.map((t, i) => i).filter((i) => !SPECIAL.has(tokens[i]));
+    let defaultIdx = displayIdxs.find((i) => tokens[i].toLowerCase() === 'it');
+    if (defaultIdx === undefined) {
+      defaultIdx = displayIdxs.reduce((best, i) => (tokens[i].length > tokens[best].length ? i : best), displayIdxs[0]);
+    }
+
+    renderTokens();
+    selectToken(defaultIdx);
+  }
+
+  function renderTokens() {
+    els.tokRow.innerHTML = '';
+    currentTokens.forEach((t, i) => {
+      if (SPECIAL.has(t)) return;
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'tok-chip';
+      chip.textContent = t;
+      chip.dataset.idx = i;
+      chip.addEventListener('click', () => selectToken(i));
+      els.tokRow.appendChild(chip);
+    });
+  }
+
+  function selectToken(idx) {
+    selectedIdx = idx;
+    els.tokRow.querySelectorAll('.tok-chip').forEach((chip) => {
+      chip.classList.toggle('selected', Number(chip.dataset.idx) === idx);
+    });
+
+    const row = currentMatrix[idx];
+    const ranked = currentTokens
+      .map((t, i) => ({ t, score: row[i], i }))
+      .filter((x) => !SPECIAL.has(x.t) && x.i !== idx)
+      .sort((a, b) => b.score - a.score);
+
+    if (!ranked.length) {
+      els.rankList.innerHTML = '<div class="placeholder">مفيش كلمات تانية للمقارنة</div>';
+      return;
+    }
+
+    const maxS = ranked[0].score;
+    const minS = ranked[ranked.length - 1].score;
+    const range = Math.max(1e-6, maxS - minS);
+
+    els.rankList.innerHTML = '';
+    ranked.forEach((item, i) => {
+      const pct = ((item.score - minS) / range) * 100;
+      const el = document.createElement('div');
+      el.className = 'rank-item' + (i === 0 ? ' top' : '');
+      el.innerHTML = `
+        <span class="rank-sentence" dir="ltr">${escapeHtml(item.t)}</span>
+        <span class="rank-bar-track"><span class="rank-bar-fill" style="width:${pct}%"></span></span>
+        <span class="rank-score">${item.score.toFixed(3)}</span>
+      `;
+      els.rankList.appendChild(el);
+    });
+  }
+
+  let debounceTimer = null;
+  els.input.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => analyze(els.input.value), 600);
+  });
+
+  document.querySelectorAll('.example-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      els.input.value = btn.dataset.example;
+      analyze(els.input.value);
+    });
+  });
+
+  init();
+</script>
+</body>
+</html>
