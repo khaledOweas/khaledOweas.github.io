@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Token Counter — إزاي الـ AI بيقرأ كلامك</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0d11;
+    --bg2:#14161c;
+    --card:#1a1c22;
+    --border:#2a2c32;
+    --border-strong:#3a3d44;
+    --text:#f1efe8;
+    --text-secondary:#9a9a92;
+    --text-muted:#6b6f76;
+    --accent:#F0997B;
+    --accent-strong:#D85A30;
+    --teal:#5DCAA5;
+    --purple:#AFA9EC;
+    --amber:#EF9F27;
+    --pink:#ED93B1;
+    --danger:#E24B4A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 85% 8%, rgba(240,153,123,0.12), transparent 45%),
+      radial-gradient(circle at 10% 92%, rgba(93,202,165,0.10), transparent 45%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Cairo', sans-serif;
+    display:flex;
+    justify-content:center;
+    padding:32px 16px 64px;
+  }
+  .wrap{ width:100%; max-width:760px; }
+
+  header{ text-align:center; margin-bottom:28px; }
+  .eyebrow{
+    display:inline-block; padding:6px 18px; border:1.4px solid var(--accent);
+    border-radius:999px; color:var(--accent); font-size:13px; font-weight:600;
+    margin-bottom:16px;
+  }
+  h1{ font-size:clamp(26px,5vw,38px); font-weight:800; margin:0 0 8px; line-height:1.3; }
+  header p{ color:var(--text-secondary); font-size:15px; margin:0; }
+
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:18px;
+    padding:24px; margin-bottom:20px;
+  }
+
+  .controls{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+  select, .example-btn{
+    background:var(--bg2); color:var(--text); border:1px solid var(--border);
+    border-radius:10px; padding:9px 14px; font-family:'Cairo',sans-serif;
+    font-size:14px; cursor:pointer; transition:border-color .15s;
+  }
+  select:hover, .example-btn:hover{ border-color:var(--border-strong); }
+  .example-btn{ color:var(--text-secondary); }
+  .example-btn:hover{ color:var(--text); }
+
+  textarea{
+    width:100%; min-height:130px; resize:vertical;
+    background:var(--bg2); color:var(--text); border:1px solid var(--border);
+    border-radius:12px; padding:16px; font-size:16px; font-family:'Cairo',sans-serif;
+    line-height:1.7; outline:none;
+  }
+  textarea:focus{ border-color:var(--accent); }
+
+  .stats{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px;
+  }
+  .stat{
+    background:var(--bg2); border:1px solid var(--border); border-radius:12px;
+    padding:14px; text-align:center;
+  }
+  .stat .num{ font-size:28px; font-weight:800; font-family:'JetBrains Mono',monospace; }
+  .stat .label{ font-size:12px; color:var(--text-muted); margin-top:4px; }
+  .stat.tokens .num{ color:var(--accent); }
+
+  .section-title{
+    font-size:14px; font-weight:600; color:var(--text-secondary);
+    margin:22px 0 10px; display:flex; align-items:center; gap:8px;
+  }
+
+  .tokens-box{
+    display:flex; flex-wrap:wrap; gap:6px; min-height:48px;
+    background:var(--bg2); border:1px dashed var(--border); border-radius:12px;
+    padding:14px;
+  }
+  .chip{
+    font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:600;
+    padding:4px 9px; border-radius:7px; white-space:pre; cursor:default;
+    border:1px solid transparent;
+  }
+  .chip:hover{ filter:brightness(1.15); }
+  .placeholder{ color:var(--text-muted); font-size:14px; padding:6px; }
+
+  .hint{ font-size:13px; color:var(--text-muted); margin-top:14px; line-height:1.8; }
+  .hint b{ color:var(--text-secondary); }
+
+  .back{
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--text-secondary); font-size:13px; font-weight:600;
+    text-decoration:none; margin-bottom:18px;
+  }
+  .back:hover{ color:var(--accent); }
+  footer{ text-align:center; color:var(--text-muted); font-size:13px; margin-top:24px; }
+  footer a{ color:var(--accent); text-decoration:none; }
+
+  .loading{ color:var(--text-muted); font-size:14px; text-align:center; padding:20px; }
+  .error{ color:var(--danger); font-size:14px; text-align:center; padding:20px; }
+
+  @media (max-width:480px){
+    .stats{ grid-template-columns:1fr 1fr; }
+    .stat:last-child{ grid-column:span 2; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="../../learning-path/01-tiktokenization/#demo">← Learning Path</a>
+  <header>
+    <span class="eyebrow">شرح مبسّط</span>
+    <h1>إزاي الـ AI بيقرأ كلامك؟</h1>
+    <p>اكتب أي نص وشوف إزاي بيتقسّم لـ Tokens فعليًا — زي البيتزا 🍕</p>
+  </header>
+
+  <div class="card">
+    <div class="controls">
+      <select id="encodingSelect">
+        <option value="o200k_base">GPT-4o / GPT-4o-mini (o200k_base)</option>
+        <option value="cl100k_base">GPT-4 / GPT-3.5-turbo (cl100k_base)</option>
+      </select>
+      <button class="example-btn" data-example="en">مثال إنجليزي</button>
+      <button class="example-btn" data-example="ar">مثال عربي</button>
+      <button class="example-btn" data-example="code">مثال كود</button>
+    </div>
+
+    <textarea id="input" dir="auto" placeholder="اكتب هنا... مثلاً: unbelievable">Tokenization is how language models read text.</textarea>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="num" id="charCount">0</div>
+        <div class="label">حرف</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="wordCount">0</div>
+        <div class="label">كلمة</div>
+      </div>
+      <div class="stat tokens">
+        <div class="num" id="tokenCount">0</div>
+        <div class="label">Token</div>
+      </div>
+    </div>
+
+    <div class="section-title">📦 الـ Tokens الفعلية</div>
+    <div class="tokens-box" id="tokensBox">
+      <div class="placeholder" id="statusMsg">جاري تحميل الـ Tokenizer...</div>
+    </div>
+
+    <p class="hint">
+      <b>ملحوظة:</b> مرّر الماوس فوق أي Token عشان تشوف رقم الـ ID بتاعه.
+      الترميز (Encoding) بيختلف حسب الموديل — o200k_base هو اللي بيستخدمه GPT-4o،
+      وcl100k_base بيستخدمه GPT-4 وGPT-3.5. عدد الـ Tokens ده تقريبي لأي موديل تاني (زي Claude أو Llama).
+    </p>
+  </div>
+
+  <footer>
+    مبني باستخدام <a href="https://github.com/niieani/gpt-tokenizer" target="_blank" rel="noopener">js-tiktoken</a>
+    — بيشتغل بالكامل جوه المتصفح، مفيش نص بيتبعت لأي سيرفر.
+  </footer>
+</div>
+
+<script type="module">
+  import { Tiktoken } from "https://esm.sh/js-tiktoken@1/lite";
+
+  const els = {
+    textarea: document.getElementById('input'),
+    charCount: document.getElementById('charCount'),
+    wordCount: document.getElementById('wordCount'),
+    tokenCount: document.getElementById('tokenCount'),
+    tokensBox: document.getElementById('tokensBox'),
+    statusMsg: document.getElementById('statusMsg'),
+    encodingSelect: document.getElementById('encodingSelect'),
+  };
+
+  const palette = [
+    { bg: 'rgba(93,202,165,0.16)',  fg: '#9FE1CB', border: 'rgba(93,202,165,0.4)' },
+    { bg: 'rgba(175,169,236,0.16)', fg: '#CECBF6', border: 'rgba(175,169,236,0.4)' },
+    { bg: 'rgba(240,153,123,0.16)', fg: '#F5C4B3', border: 'rgba(240,153,123,0.4)' },
+    { bg: 'rgba(239,159,39,0.16)',  fg: '#FAC775', border: 'rgba(239,159,39,0.4)' },
+    { bg: 'rgba(237,147,177,0.16)', fg: '#F4C0D1', border: 'rgba(237,147,177,0.4)' },
+  ];
+
+  const examples = {
+    en: "I love building AI applications with .NET",
+    ar: "بحب أبني تطبيقات ذكاء اصطناعي باستخدام دوت نت",
+    code: "public int CountTokens(string text) => tokenizer.CountTokens(text);",
+  };
+
+  const cache = {};
+
+  async function loadEncoding(name) {
+    if (cache[name]) return cache[name];
+    const res = await fetch(`https://tiktoken.pages.dev/js/${name}.json`);
+    if (!res.ok) throw new Error('تعذر تحميل بيانات الترميز');
+    const ranks = await res.json();
+    const enc = new Tiktoken(ranks);
+    cache[name] = enc;
+    return enc;
+  }
+
+  let currentEncoder = null;
+
+  function render() {
+    const text = els.textarea.value;
+    els.charCount.textContent = text.length.toLocaleString('en-US');
+    els.wordCount.textContent = (text.trim() ? text.trim().split(/\s+/).length : 0).toLocaleString('en-US');
+
+    if (!currentEncoder) return;
+
+    if (!text) {
+      els.tokenCount.textContent = '0';
+      els.tokensBox.innerHTML = '<div class="placeholder">اكتب نص عشان تشوف الـ Tokens بتاعته</div>';
+      return;
+    }
+
+    const ids = currentEncoder.encode(text);
+    els.tokenCount.textContent = ids.length.toLocaleString('en-US');
+
+    els.tokensBox.innerHTML = '';
+    ids.forEach((id, i) => {
+      const piece = currentEncoder.decode([id]);
+      const color = palette[i % palette.length];
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.textContent = piece.replace(/\n/g, '⏎').replace(/ /g, '·');
+      chip.title = `ID: ${id}`;
+      chip.style.background = color.bg;
+      chip.style.color = color.fg;
+      chip.style.borderColor = color.border;
+      els.tokensBox.appendChild(chip);
+    });
+  }
+
+  async function switchEncoding(name) {
+    els.statusMsg.textContent = 'جاري تحميل الـ Tokenizer...';
+    els.tokensBox.innerHTML = '';
+    els.tokensBox.appendChild(els.statusMsg);
+    try {
+      currentEncoder = await loadEncoding(name);
+      render();
+    } catch (err) {
+      els.tokensBox.innerHTML = `<div class="error">حصل خطأ في تحميل الترميز — تأكد من اتصال الإنترنت وحاول تاني.</div>`;
+      console.error(err);
+    }
+  }
+
+  els.textarea.addEventListener('input', render);
+  els.encodingSelect.addEventListener('change', (e) => switchEncoding(e.target.value));
+
+  document.querySelectorAll('.example-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      els.textarea.value = examples[btn.dataset.example];
+      render();
+    });
+  });
+
+  switchEncoding(els.encodingSelect.value);
+</script>
+
+</body>
+</html>

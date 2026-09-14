@@ -1,0 +1,170 @@
+<!--
+  LESSON TEMPLATE — copy this whole folder to start a new lesson.
+
+  Steps:
+  1. Copy `learning-path/_template/` to `learning-path/<NN>-<slug>/`
+     (e.g. `learning-path/02-embeddings/`), two-digit prefix, kebab-case slug.
+  2. In this file, replace every {{PLACEHOLDER}} and the sample <article>/
+     demo-card content below with the real lesson. Optional hero image:
+     drop an optimized JPEG/PNG next to this file (e.g. `hero.jpg`, keep
+     originals in AI_Track/) and add
+       <img class="post-hero" src="./hero.jpg" width="…" height="…" alt="…">
+     as the first line inside <article class="post">.
+  3. If the lesson needs an interactive demo, build it in the inline
+     <script> at the bottom (or reuse a pattern from 01-tiktokenization).
+     Keep raw drafts / standalone single-file demos under
+     AI_Track/<N>-<Slug>/ and link out to them from .demo-foot, same as
+     Lesson 01 does with token-counter.html.
+  4. Add one <a class="track-item"> card in learning-path/index.html
+     pointing at "./<NN>-<slug>/", and remove the "soon" placeholder card
+     once this lesson is ready (or bump it to the next number).
+  5. Fill in the OG/Twitter meta block and the share-bar's
+     data-share-url / data-share-text below — that's what makes the
+     LinkedIn/X/Facebook preview card and share buttons work. For the
+     preview image, make (or reuse) a 1200x630 landscape JPEG — if your
+     source art is portrait, letterbox it on the site's --bg color rather
+     than cropping, e.g.:
+       sips -s format jpeg -Z 630 source.png --out /tmp/scaled.jpg
+       sips -p 630 1200 --padColor 070B10 /tmp/scaled.jpg --out og-image.jpg
+  6. Delete this comment block before publishing.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{LESSON_TITLE}} — Learning Path — Khaled Oweas</title>
+<meta name="description" content="{{ONE_SENTENCE_DESCRIPTION}}">
+<meta name="author" content="Khaled Oweas">
+<link rel="canonical" href="https://khaledoweas.github.io/learning-path/{{NN}}-{{slug}}/">
+
+<!-- Open Graph / LinkedIn preview -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Khaled Oweas — EKOAI Learning Path">
+<meta property="og:title" content="{{LESSON_TITLE}} — {{SHORT_HOOK}}">
+<meta property="og:description" content="{{ONE_SENTENCE_DESCRIPTION}}">
+<meta property="og:url" content="https://khaledoweas.github.io/learning-path/{{NN}}-{{slug}}/">
+<meta property="og:image" content="https://khaledoweas.github.io/learning-path/{{NN}}-{{slug}}/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{IMAGE_ALT_TEXT}}">
+
+<!-- Twitter/X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{LESSON_TITLE}} — {{SHORT_HOOK}}">
+<meta name="twitter:description" content="{{ONE_SENTENCE_DESCRIPTION}}">
+<meta name="twitter:image" content="https://khaledoweas.github.io/learning-path/{{NN}}-{{slug}}/og-image.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/learning-path.css">
+</head>
+<body>
+<div class="aurora" aria-hidden="true"></div>
+<div class="grid-overlay" aria-hidden="true"></div>
+
+<div class="page">
+<nav>
+  <div class="wrap">
+    <a class="nav-mark" href="../../index.html"><span class="dot"></span>KHALED.OWEAS</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <div class="nav-links" id="nav-links">
+      <a href="../../index.html#about">About</a>
+      <a href="../../index.html#experience">Experience</a>
+      <a href="../../index.html#products">Products</a>
+      <a href="../../index.html#projects">Projects</a>
+      <a href="../../index.html#skills">Capabilities</a>
+      <a href="../../index.html#education">Education</a>
+      <a href="../" aria-current="page">Learning Path</a>
+      <a href="../../index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="lesson" id="lesson-{{NN}}">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="../">← Learning Path</a></div>
+    <div class="lesson-head">
+      <div>
+        <div class="eyebrow">Lesson {{NN}}</div>
+        <h1>{{LESSON_TITLE}}</h1>
+      </div>
+      <!-- Drop this button if the lesson has no live demo. -->
+      <a class="btn ghost" href="#demo">Try the live example →</a>
+    </div>
+
+    <!-- Share bar: fill in the two data-share-* attributes and the
+         icons/copy-link work automatically via learning-path.js. -->
+    <div class="share-bar" aria-label="Share this lesson" data-share
+         data-share-url="https://khaledoweas.github.io/learning-path/{{NN}}-{{slug}}/"
+         data-share-text="{{SHORT_SHARE_HOOK}}">
+      <span class="share-label">Share</span>
+      <a class="share-btn" data-share-linkedin target="_blank" rel="noopener" aria-label="Share on LinkedIn" title="Share on LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/></svg>
+      </a>
+      <a class="share-btn" data-share-x target="_blank" rel="noopener" aria-label="Share on X" title="Share on X">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a class="share-btn" data-share-facebook target="_blank" rel="noopener" aria-label="Share on Facebook" title="Share on Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103.401.048.816.113 1.141.195v3.325a8.62 8.62 0 0 0-.653-.036 3.887 3.887 0 0 0-.653-.055c-.61 0-1.153.09-1.611.376-.363.226-.65.53-.774.895-.14.416-.184.912-.184 1.416v1.34h3.629l-.478 3.667h-3.152v7.98H9.101z"/></svg>
+      </a>
+      <a class="share-btn" data-share-whatsapp target="_blank" rel="noopener" aria-label="Share on WhatsApp" title="Share on WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.007 2C6.505 2 2.036 6.469 2.036 11.972c0 1.762.462 3.48 1.34 4.994L2 22l5.146-1.35a9.936 9.936 0 0 0 4.858 1.239h.004c5.502 0 9.97-4.47 9.97-9.973 0-2.663-1.037-5.166-2.922-7.05A9.897 9.897 0 0 0 12.008 2zm0 18.253a8.27 8.27 0 0 1-4.213-1.155l-.302-.18-3.132.822.836-3.056-.198-.314a8.264 8.264 0 0 1-1.268-4.398c0-4.567 3.717-8.284 8.285-8.284a8.23 8.23 0 0 1 5.858 2.429 8.226 8.226 0 0 1 2.421 5.858c0 4.568-3.717 8.278-8.287 8.278z"/></svg>
+      </a>
+      <button type="button" class="share-btn" data-copy-link aria-label="Copy link" title="Copy link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <span class="copied-text">Copied!</span>
+      </button>
+    </div>
+
+    <!-- Write the actual post here. lang="ar" dir="rtl" if writing in
+         Arabic like Lesson 01; drop both attributes for an English post. -->
+    <article class="post" lang="ar" dir="rtl">
+      <h1>{{POST_HEADLINE}}</h1>
+      <p class="subtitle">{{POST_SUBTITLE}}</p>
+
+      <p>{{PARAGRAPH}}</p>
+      <div class="callout">{{KEY_TAKEAWAY_CALLOUT}}</div>
+      <p>{{PARAGRAPH}}</p>
+
+      <h2>{{SUBHEAD}}</h2>
+      <p>{{PARAGRAPH}}</p>
+
+      <h2>الخلاصة</h2>
+      <p>{{CLOSING_PARAGRAPH}}</p>
+      <p class="hash">#EKOAI</p>
+    </article>
+
+    <!-- Optional: a live demo card. Remove this whole <div> if the
+         lesson is text-only. -->
+    <div class="demo-card" id="demo" lang="ar" dir="rtl">
+      <h3>جرّب بنفسك</h3>
+      <p class="hint-top">{{DEMO_INSTRUCTIONS}}</p>
+
+      <!-- Build the actual widget here: controls / textarea / stats /
+           tokens-box are all styled already in learning-path.css if
+           useful, or write whatever markup this lesson's demo needs. -->
+      <div id="demoRoot"></div>
+
+      <div class="demo-foot" dir="ltr" lang="en">
+        <span>Runs in the browser — nothing is sent to a server.</span>
+        <a href="../../AI_Track/{{N}}-{{Slug}}/{{demo-file}}.html">Open standalone example ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="foot-note">KHALED OWEAS · LEARNING PATH · EKOAI · LESSON {{NN}} {{LESSON_TITLE_UPPER}}</p>
+  </div>
+</footer>
+</div>
+
+<script src="../assets/learning-path.js"></script>
+<script type="module">
+  // Lesson-specific interactive logic goes here.
+</script>
+</body>
+</html>

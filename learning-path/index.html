@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Path — Khaled Oweas</title>
+<meta name="description" content="EKOAI learning path: short posts and live in-browser examples on how language models actually work, written from a working engineer's desk.">
+<meta name="author" content="Khaled Oweas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/learning-path.css">
+</head>
+<body>
+<div class="aurora" aria-hidden="true"></div>
+<div class="grid-overlay" aria-hidden="true"></div>
+
+<div class="page">
+<nav>
+  <div class="wrap">
+    <a class="nav-mark" href="../index.html"><span class="dot"></span>KHALED.OWEAS</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <div class="nav-links" id="nav-links">
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#experience">Experience</a>
+      <a href="../index.html#products">Products</a>
+      <a href="../index.html#projects">Projects</a>
+      <a href="../index.html#skills">Capabilities</a>
+      <a href="../index.html#education">Education</a>
+      <a href="./" aria-current="page">Learning Path</a>
+      <a href="../index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">EKOAI · Public notes</div>
+    <h1>Learning Path</h1>
+    <p class="lede">How language models actually work — short posts and live examples, written from a working engineer’s desk. Pick a topic below to read it and try the live example.</p>
+    <div class="path-meta">
+      <span class="pill live">1 lesson live</span>
+      <span class="pill">Tokens · BPE · Cost</span>
+      <span class="pill">Arabic + English</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <!--
+    Each lesson is one <a class="track-item"> pointing at its own
+    learning-path/<NN>-<slug>/ page. To add a new lesson:
+      1. Copy learning-path/_template/ to learning-path/<NN>-<slug>/
+         and fill it in.
+      2. Add one card here, in order, pointing at "./<NN>-<slug>/".
+      3. Drop any raw drafts / standalone code demos for it under
+         AI_Track/<N>-<Slug>/ and link out to them from the lesson
+         page's demo-foot, same as Lesson 01 does.
+    A lesson that isn't ready yet can use class="track-item soon"
+    with no href-worthy content, see the placeholder below.
+  -->
+  <div class="track" aria-label="Learning path lessons">
+    <a class="track-item active" href="./01-tiktokenization/">
+      <span class="track-num">01</span>
+      <div>
+        <h3>TikTokenization</h3>
+        <p>How AI splits language into tokens — pizza slices, IDs, and why Arabic can cost more.</p>
+      </div>
+      <span class="status">Open →</span>
+    </a>
+
+    <div class="track-item soon" aria-disabled="true">
+      <span class="track-num">02</span>
+      <div>
+        <h3>Next topic</h3>
+        <p>Whatever I'm studying next goes here.</p>
+      </div>
+      <span class="status">Soon</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p class="foot-note">KHALED OWEAS · LEARNING PATH · EKOAI</p>
+  </div>
+</footer>
+</div>
+
+<script src="./assets/learning-path.js"></script>
+</body>
+</html>

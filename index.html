@@ -136,7 +136,10 @@
   .nav-mark{
     font-family:var(--font-mono); font-size:13px; color:var(--text);
     display:flex; align-items:center; gap:8px; letter-spacing:0.04em;
+    transition:color .25s;
   }
+  .nav-mark:hover{color:var(--accent-bright);}
+  .nav-links a[aria-current="page"]{color:var(--accent-bright);}
   .nav-mark .dot{
     width:7px;height:7px;border-radius:50%;background:var(--accent);
     box-shadow:0 0 10px rgba(73,201,184,0.8);
@@ -151,7 +154,7 @@
     font-family:var(--font-mono); font-size:12px; padding:8px 12px; border-radius:4px; cursor:pointer;
   }
   .nav-toggle:hover{border-color:var(--accent); color:var(--accent);}
-  @media(max-width:720px){
+  @media(max-width:960px){
     .nav-toggle{display:inline-flex;}
     .nav-links{
       display:none; position:absolute; top:64px; left:0; right:0;
@@ -735,7 +738,7 @@
 <div class="page">
 <nav>
   <div class="wrap">
-    <div class="nav-mark"><span class="dot"></span>KHALED.OWEAS</div>
+    <a class="nav-mark" href="./"><span class="dot"></span>KHALED.OWEAS</a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
     <div class="nav-links" id="nav-links">
       <a href="#about">About</a>
@@ -744,6 +747,7 @@
       <a href="#projects">Projects</a>
       <a href="#skills">Capabilities</a>
       <a href="#education">Education</a>
+      <a href="learning-path/">Learning Path</a>
       <a href="#contact">Contact</a>
     </div>
   </div>
