@@ -310,6 +310,43 @@ nav .wrap{
   border:1px solid var(--line-soft);
   margin-bottom:26px;
 }
+.concept-diagram{
+  display:block;
+  direction:ltr;
+  width:100%;
+  height:auto;
+  border-radius:16px;
+  margin-bottom:26px;
+}
+.concept-diagram text{font-family:var(--font-arabic);}
+.concept-diagram .mono{font-family:var(--font-mono);}
+.concept-diagram .display{font-family:var(--font-display);}
+
+.rank-list{display:flex; flex-direction:column; gap:10px; margin-top:4px;}
+.rank-item{
+  display:flex; align-items:center; gap:12px;
+  background:var(--bg-alt); border:1px solid var(--line-soft); border-radius:10px;
+  padding:10px 14px; transition:border-color .2s, box-shadow .2s;
+}
+.rank-item.top{border-color:var(--accent-line); box-shadow:0 0 20px rgba(73,201,184,0.1);}
+.rank-item .rank-sentence{flex:1; font-size:14.5px; color:var(--text); font-family:var(--font-body);}
+.rank-item .rank-bar-track{
+  width:90px; height:6px; border-radius:99px; background:var(--line-soft);
+  overflow:hidden; flex-shrink:0;
+}
+.rank-item .rank-bar-fill{
+  height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-bright));
+  border-radius:99px;
+}
+.rank-item .rank-score{
+  font-family:var(--font-mono); font-size:12px; color:var(--text-dim);
+  width:42px; text-align:right; flex-shrink:0;
+}
+.rank-item.top .rank-score{color:var(--accent-bright);}
+.model-progress{
+  font-family:var(--font-mono); font-size:12px; color:var(--text-dim);
+  margin-top:8px;
+}
 .post h2{
   font-family:var(--font-arabic);
   font-size:22px;

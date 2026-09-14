@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embedding Explorer — إزاي الـ AI بيفهم المعنى</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0d11;
+    --bg2:#14161c;
+    --card:#1a1c22;
+    --border:#2a2c32;
+    --border-strong:#3a3d44;
+    --text:#f1efe8;
+    --text-secondary:#9a9a92;
+    --text-muted:#6b6f76;
+    --accent:#49C9B8;
+    --accent-strong:#2f9e90;
+    --danger:#E24B4A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 85% 8%, rgba(73,201,184,0.12), transparent 45%),
+      radial-gradient(circle at 10% 92%, rgba(175,169,236,0.10), transparent 45%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Cairo', sans-serif;
+    display:flex;
+    justify-content:center;
+    padding:32px 16px 64px;
+  }
+  .wrap{ width:100%; max-width:760px; }
+
+  header{ text-align:center; margin-bottom:28px; }
+  .eyebrow{
+    display:inline-block; padding:6px 18px; border:1.4px solid var(--accent);
+    border-radius:999px; color:var(--accent); font-size:13px; font-weight:600;
+    margin-bottom:16px;
+  }
+  h1{ font-size:clamp(24px,4.6vw,34px); font-weight:800; margin:0 0 8px; line-height:1.35; }
+  header p{ color:var(--text-secondary); font-size:15px; margin:0; }
+
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:18px;
+    padding:24px; margin-bottom:20px;
+  }
+
+  .controls{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+  .example-btn{
+    background:var(--bg2); color:var(--text-secondary); border:1px solid var(--border);
+    border-radius:10px; padding:9px 14px; font-family:'JetBrains Mono',monospace;
+    font-size:13px; cursor:pointer; transition:border-color .15s, color .15s;
+  }
+  .example-btn:hover{ border-color:var(--accent); color:var(--text); }
+
+  textarea{
+    width:100%; min-height:90px; resize:vertical;
+    background:var(--bg2); color:var(--text); border:1px solid var(--border);
+    border-radius:12px; padding:16px; font-size:16px; font-family:'JetBrains Mono',monospace;
+    line-height:1.7; outline:none; direction:ltr; text-align:left;
+  }
+  textarea:focus{ border-color:var(--accent); }
+
+  .model-progress{
+    font-size:13px; color:var(--text-muted); margin:14px 0 0; line-height:1.8;
+  }
+  .model-progress.error{ color:var(--danger); }
+
+  .section-title{
+    font-size:14px; font-weight:600; color:var(--text-secondary);
+    margin:22px 0 10px; display:flex; align-items:center; gap:8px;
+  }
+
+  .rank-list{ display:flex; flex-direction:column; gap:10px; }
+  .rank-item{
+    display:flex; align-items:center; gap:12px;
+    background:var(--bg2); border:1px solid var(--border); border-radius:10px;
+    padding:10px 14px; transition:border-color .2s;
+  }
+  .rank-item.top{ border-color:var(--accent); box-shadow:0 0 20px rgba(73,201,184,0.12); }
+  .rank-item .rank-sentence{ flex:1; font-size:14.5px; color:var(--text); direction:ltr; text-align:left; }
+  .rank-item .rank-bar-track{
+    width:90px; height:6px; border-radius:99px; background:var(--border);
+    overflow:hidden; flex-shrink:0;
+  }
+  .rank-item .rank-bar-fill{ height:100%; background:linear-gradient(90deg,var(--accent-strong),var(--accent)); border-radius:99px; }
+  .rank-item .rank-score{
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted);
+    width:42px; text-align:right; flex-shrink:0;
+  }
+  .rank-item.top .rank-score{ color:var(--accent); }
+  .placeholder, .loading{ color:var(--text-muted); font-size:14px; padding:6px; }
+
+  .hint{ font-size:13px; color:var(--text-muted); margin-top:14px; line-height:1.8; }
+  .hint b{ color:var(--text-secondary); }
+
+  .back{
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--text-secondary); font-size:13px; font-weight:600;
+    text-decoration:none; margin-bottom:18px;
+  }
+  .back:hover{ color:var(--accent); }
+  footer{ text-align:center; color:var(--text-muted); font-size:13px; margin-top:24px; }
+  footer a{ color:var(--accent); text-decoration:none; }
+
+  @media (max-width:480px){
+    .rank-item{ flex-wrap:wrap; }
+    .rank-item .rank-bar-track{ order:3; width:100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="../../learning-path/02-embeddings/#demo">← Learning Path</a>
+  <header>
+    <span class="eyebrow">شرح مبسّط</span>
+    <h1>إزاي الـ AI بيفهم إن الكلام متشابه في المعنى؟</h1>
+    <p>اكتب جملة بالإنجليزي وشوف مين من الجمل التانية أقرب لها في المعنى — حتى لو مفيش ولا كلمة مشتركة.</p>
+  </header>
+
+  <div class="card">
+    <div class="controls">
+      <button class="example-btn" data-example="a fluffy kitten">a fluffy kitten</button>
+      <button class="example-btn" data-example="debugging a python script">debugging a python script</button>
+      <button class="example-btn" data-example="ordering dinner tonight">ordering dinner tonight</button>
+    </div>
+
+    <textarea id="queryInput" placeholder="Type any English sentence...">a fluffy kitten</textarea>
+
+    <p class="model-progress" id="modelStatus">جاري تحميل نموذج الفهم الدلالي لأول مرة (~23MB)… هيتخزن كاش في المتصفح، فمن تاني مرة هيكون فوري.</p>
+
+    <div class="section-title">📊 الترتيب حسب التشابه في المعنى</div>
+    <div class="rank-list" id="rankList">
+      <div class="placeholder">استنى تحميل النموذج...</div>
+    </div>
+
+    <p class="hint">
+      <b>ملحوظة:</b> النموذج المستخدم هنا (all-MiniLM-L6-v2) مدرّب أساسًا على الإنجليزي، عشان يفضل التحميل خفيف (~23MB) ويشتغل بسرعة في المتصفح.
+      الأرقام هنا Cosine Similarity حقيقية محسوبة في المتصفح — مفيش نص بيتبعت لأي سيرفر.
+    </p>
+  </div>
+
+  <footer>
+    مبني باستخدام <a href="https://github.com/huggingface/transformers.js" target="_blank" rel="noopener">transformers.js</a>
+    (نموذج Xenova/all-MiniLM-L6-v2) — بيشتغل بالكامل جوه المتصفح عن طريق WebAssembly.
+  </footer>
+</div>
+
+<script type="module">
+  import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.0';
+
+  const corpus = [
+    'The cat is sleeping on the sofa.',
+    'Dogs are loyal and friendly animals.',
+    'I love eating pizza on the weekend.',
+    'This restaurant serves amazing burgers.',
+    'The stock market went up sharply today.',
+    'I need to fix a bug in my JavaScript code.',
+    'Machine learning models can understand meaning.',
+    'The weather is sunny and warm today.',
+  ];
+
+  const els = {
+    input: document.getElementById('queryInput'),
+    status: document.getElementById('modelStatus'),
+    rankList: document.getElementById('rankList'),
+  };
+
+  function dot(a, b) {
+    let s = 0;
+    for (let i = 0; i < a.length; i++) s += a[i] * b[i];
+    return s;
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  let extractor = null;
+  let corpusVecs = null;
+  let requestSeq = 0;
+  let debounceTimer = null;
+
+  async function init() {
+    try {
+      extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+      const output = await extractor(corpus, { pooling: 'mean', normalize: true });
+      corpusVecs = output.tolist();
+      els.status.textContent = '';
+      render();
+    } catch (err) {
+      els.status.textContent = 'حصل خطأ في تحميل النموذج — تأكد من اتصال الإنترنت وحاول تاني.';
+      els.status.classList.add('error');
+      console.error(err);
+    }
+  }
+
+  async function render() {
+    const text = els.input.value.trim();
+    if (!extractor || !corpusVecs) return;
+    if (!text) {
+      els.rankList.innerHTML = '<div class="placeholder">اكتب جملة عشان تشوف أقرب الجمل ليها في المعنى</div>';
+      return;
+    }
+    const myReq = ++requestSeq;
+    els.rankList.innerHTML = '<div class="loading">بيحسب التشابه...</div>';
+    const qOutput = await extractor([text], { pooling: 'mean', normalize: true });
+    if (myReq !== requestSeq) return;
+    const qVec = qOutput.tolist()[0];
+
+    const scored = corpus.map((s, i) => ({ text: s, score: dot(qVec, corpusVecs[i]) }));
+    scored.sort((a, b) => b.score - a.score);
+    const maxS = scored[0].score;
+    const minS = scored[scored.length - 1].score;
+    const range = Math.max(1e-6, maxS - minS);
+
+    els.rankList.innerHTML = '';
+    scored.forEach((item, idx) => {
+      const pct = ((item.score - minS) / range) * 100;
+      const row = document.createElement('div');
+      row.className = 'rank-item' + (idx === 0 ? ' top' : '');
+      row.innerHTML = `
+        <span class="rank-sentence">${escapeHtml(item.text)}</span>
+        <span class="rank-bar-track"><span class="rank-bar-fill" style="width:${pct}%"></span></span>
+        <span class="rank-score">${item.score.toFixed(2)}</span>
+      `;
+      els.rankList.appendChild(row);
+    });
+  }
+
+  function scheduleRender() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(render, 350);
+  }
+
+  els.input.addEventListener('input', scheduleRender);
+  document.querySelectorAll('.example-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      els.input.value = btn.dataset.example;
+      render();
+    });
+  });
+
+  init();
+</script>
+
+</body>
+</html>

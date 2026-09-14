@@ -1,0 +1,28 @@
+🧭 إزاي الـ AI بيفهم إن الكلام متشابه في المعنى؟ الحل: بيحوّله لإحداثيات
+في المقال اللي فات اتكلمنا إن النص بيتقسّم لـ Tokens، وكل Token ليه رقم تعريف (ID).
+لكن الرقم ده لوحده مايقولش حاجة عن المعنى. رقم 204 ورقم 87 مفيش بينهم أي علاقة رقمية حقيقية.
+هنا يجي دور الـ Embeddings: النموذج بياخد الكلمة أو الجملة ويحوّلها لقائمة أرقام (Vector) — تخيّلها إحداثيات على خريطة كبيرة جدًا، بس بدل بُعدين زي الخريطة العادية، عندها مئات الأبعاد.
+الكلام اللي معناه قريب بيقع في نفس المنطقة على الخريطة دي، حتى لو الكلمات نفسها مختلفة تمامًا. "قطة صغيرة" هتبقى قريبة من "حيوان أليف" أكتر من قربها من "برمجة كمبيوتر" — رغم إنهم متقاسمناش ولا كلمة واحدة.
+طب إزاي بيتحسب "القرب" ده؟
+بيستخدموا مقياس اسمه Cosine Similarity: بياخد اتجاه المتجهين (Vectors) ويحسب مدى تشابههم. النتيجة رقم من -1 لـ 1: كل ما اقترب من 1 يبقى المعنى متشابه أكتر، وكل ما اقترب من صفر يبقى مفيش علاقة تقريبًا.
+طب الإحداثيات دي جايه منين؟
+النموذج بيتدرب على كميات ضخمة من النصوص، وبيتعلم إن الكلمات اللي بتيجي في سياقات متشابهة يبقى ليها إحداثيات قريبة من بعض. مفيش حد كاتب الإحداثيات دي يدويًا؛ النموذج هو اللي بيكتشفها من البيانات لوحده.
+طب ده بيتستخدم فين في شغل حقيقي؟
+البحث الدلالي (Semantic Search): تدور بالمعنى مش بس بكلمة معينة.
+التوصيات (Recommendations): "منتجات مشابهة" أو "مقالات ذات صلة".
+تجميع البيانات (Clustering): تصنيف آلاف الرسائل أو التعليقات حسب الموضوع من غير ما حد يصنّفهم يدويًا.
+RAG (Retrieval-Augmented Generation): تقنية بتخلي الـ AI يدوّر في مستنداتك الخاصة عشان يجاوب بدقة — ومعتمدة أساسًا على الـ Embeddings.
+الخلاصة
+الـ Embeddings هي اللي بتخلي الـ AI يفهم "المعنى" مش بس "الكلمة"، وهي حجر الأساس لحاجات كتير زي البحث الذكي والتوصيات وحتى الـ RAG.
+
+#EKOAI
+
+---
+Mini-project idea (for the live demo):
+"Semantic Similarity Playground" — type any English sentence, and a small
+fixed set of ~8 example sentences gets ranked live by meaning-similarity to
+what you typed, using a real sentence-embedding model
+(Xenova/all-MiniLM-L6-v2 via @huggingface/transformers, ~23MB quantized,
+runs fully client-side via WASM, cached after first load). Shows cosine
+similarity as ranked bars — the point being: the top match often shares
+*no* words with the query, proving it's matching on meaning, not keywords.

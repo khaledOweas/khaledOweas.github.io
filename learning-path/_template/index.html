@@ -5,13 +5,47 @@
   1. Copy `learning-path/_template/` to `learning-path/<NN>-<slug>/`
      (e.g. `learning-path/02-embeddings/`), two-digit prefix, kebab-case slug.
   2. In this file, replace every {{PLACEHOLDER}} and the sample <article>/
-     demo-card content below with the real lesson. Optional hero image:
-     drop an optimized JPEG/PNG next to this file (e.g. `hero.jpg`, keep
-     originals in AI_Track/) and add
-       <img class="post-hero" src="./hero.jpg" width="…" height="…" alt="…">
-     as the first line inside <article class="post">.
+     demo-card content below with the real lesson.
+
+     Hero image, two options:
+     a) Photo/infographic: drop an optimized JPEG/PNG next to this file
+        (e.g. `hero.jpg`, keep originals in AI_Track/) and add
+          <img class="post-hero" src="./hero.jpg" width="…" height="…" alt="…">
+        as the first line inside <article class="post">.
+     b) Hand-drawn diagram: author it as inline SVG (see
+        02-embeddings/index.html for a full example — a "concept map"
+        scatter diagram) wrapped as
+          <svg class="concept-diagram" viewBox="0 0 1200 630" role="img" aria-label="…">…</svg>
+        `.concept-diagram` already sets `direction:ltr` in
+        learning-path.css — needed because an LTR-authored viewBox
+        (fixed x/y coordinates) gets its content clipped by some
+        browsers when it inherits `dir="rtl"` from the Arabic
+        <article> wrapper. Don't remove that rule, and don't rely on
+        dir=rtl for a diagram's own text — pick each <text> element's
+        position explicitly instead.
+        For the OG image, render the same SVG standalone at exactly
+        1200x630 via headless Chrome for a pixel-exact, deterministic
+        capture (interactive window-resize + screenshot is not
+        reliable for exact dimensions):
+          google-chrome --headless --disable-gpu --hide-scrollbars \
+            --window-size=1200,630 --screenshot=og-image.png file.html
+        then `sips -s format jpeg og-image.png --out og-image.jpg`.
   3. If the lesson needs an interactive demo, build it in the inline
-     <script> at the bottom (or reuse a pattern from 01-tiktokenization).
+     <script> at the bottom. Two proven patterns to reuse:
+       - Tokenizer-style (01-tiktokenization): loads a small data file
+         (js-tiktoken's merge tables) via `fetch`, all pure JS, no ML
+         runtime needed.
+       - Real ML in the browser (02-embeddings): loads an actual model
+         via transformers.js from jsDelivr —
+           import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.0';
+           const extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+         Pin an exact version. Use jsDelivr (not esm.sh) for this
+         package — it needs to load its own WASM binaries at runtime
+         and esm.sh's rewriting risks breaking that. Prefer a small
+         quantized model (check file sizes under a model's `onnx/`
+         folder on huggingface.co before committing to one — sizes
+         vary 5-10x between variants of the "same" model) so the first
+         load stays reasonable; it's cached by the browser afterward.
      Keep raw drafts / standalone single-file demos under
      AI_Track/<N>-<Slug>/ and link out to them from .demo-foot, same as
      Lesson 01 does with token-counter.html.

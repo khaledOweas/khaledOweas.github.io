@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embeddings — Learning Path — Khaled Oweas</title>
+<meta name="description" content="Lesson 02 of the EKOAI learning path: how language models turn words into vectors so similar meanings land close together, with a live semantic-similarity demo running entirely in the browser.">
+<meta name="author" content="Khaled Oweas">
+<link rel="canonical" href="https://khaledoweas.github.io/learning-path/02-embeddings/">
+
+<!-- Open Graph / LinkedIn preview -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Khaled Oweas — EKOAI Learning Path">
+<meta property="og:title" content="Embeddings — how AI understands meaning, not just words">
+<meta property="og:description" content="How language models turn words and sentences into vectors, so similar meanings land close together even with zero shared words. With a live semantic-similarity demo.">
+<meta property="og:url" content="https://khaledoweas.github.io/learning-path/02-embeddings/">
+<meta property="og:image" content="https://khaledoweas.github.io/learning-path/02-embeddings/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Diagram: words plotted as points in meaning-space, with similar concepts like cat/dog/lion clustered together far from unrelated ones like pizza or code">
+
+<!-- Twitter/X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Embeddings — how AI understands meaning, not just words">
+<meta name="twitter:description" content="Words that mean similar things end up close together in vector space — even with zero shared words. Try the live demo.">
+<meta name="twitter:image" content="https://khaledoweas.github.io/learning-path/02-embeddings/og-image.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Cairo:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/learning-path.css">
+</head>
+<body>
+<div class="aurora" aria-hidden="true"></div>
+<div class="grid-overlay" aria-hidden="true"></div>
+
+<div class="page">
+<nav>
+  <div class="wrap">
+    <a class="nav-mark" href="../../index.html"><span class="dot"></span>KHALED.OWEAS</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <div class="nav-links" id="nav-links">
+      <a href="../../index.html#about">About</a>
+      <a href="../../index.html#experience">Experience</a>
+      <a href="../../index.html#products">Products</a>
+      <a href="../../index.html#projects">Projects</a>
+      <a href="../../index.html#skills">Capabilities</a>
+      <a href="../../index.html#education">Education</a>
+      <a href="../" aria-current="page">Learning Path</a>
+      <a href="../../index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="lesson" id="lesson-02">
+  <div class="wrap">
+    <div class="breadcrumb"><a href="../">← Learning Path</a></div>
+    <div class="lesson-head">
+      <div>
+        <div class="eyebrow">Lesson 02</div>
+        <h1>Embeddings</h1>
+      </div>
+      <a class="btn ghost" href="#demo">Try the live example →</a>
+    </div>
+
+    <div class="share-bar" aria-label="Share this lesson" data-share
+         data-share-url="https://khaledoweas.github.io/learning-path/02-embeddings/"
+         data-share-text="Embeddings: how AI understands meaning, not just words 🧭 — try the live demo">
+      <span class="share-label">Share</span>
+      <a class="share-btn" data-share-linkedin target="_blank" rel="noopener" aria-label="Share on LinkedIn" title="Share on LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/></svg>
+      </a>
+      <a class="share-btn" data-share-x target="_blank" rel="noopener" aria-label="Share on X" title="Share on X">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a class="share-btn" data-share-facebook target="_blank" rel="noopener" aria-label="Share on Facebook" title="Share on Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103.401.048.816.113 1.141.195v3.325a8.62 8.62 0 0 0-.653-.036 3.887 3.887 0 0 0-.653-.055c-.61 0-1.153.09-1.611.376-.363.226-.65.53-.774.895-.14.416-.184.912-.184 1.416v1.34h3.629l-.478 3.667h-3.152v7.98H9.101z"/></svg>
+      </a>
+      <a class="share-btn" data-share-whatsapp target="_blank" rel="noopener" aria-label="Share on WhatsApp" title="Share on WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.007 2C6.505 2 2.036 6.469 2.036 11.972c0 1.762.462 3.48 1.34 4.994L2 22l5.146-1.35a9.936 9.936 0 0 0 4.858 1.239h.004c5.502 0 9.97-4.47 9.97-9.973 0-2.663-1.037-5.166-2.922-7.05A9.897 9.897 0 0 0 12.008 2zm0 18.253a8.27 8.27 0 0 1-4.213-1.155l-.302-.18-3.132.822.836-3.056-.198-.314a8.264 8.264 0 0 1-1.268-4.398c0-4.567 3.717-8.284 8.285-8.284a8.23 8.23 0 0 1 5.858 2.429 8.226 8.226 0 0 1 2.421 5.858c0 4.568-3.717 8.278-8.287 8.278z"/></svg>
+      </a>
+      <button type="button" class="share-btn" data-copy-link aria-label="Copy link" title="Copy link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <span class="copied-text">Copied!</span>
+      </button>
+    </div>
+
+    <article class="post" lang="ar" dir="rtl">
+      <img class="post-hero" src="./hero.jpg" width="800" height="1000" alt="رسم توضيحي: Token بياخد رقم تعريف (ID)، وبيتحول لـ Vector (قائمة أرقام)، وده اللي بيدّي النموذج تمثيل رقمي متعلّم فيه علاقات بين المعاني" loading="eager" decoding="async">
+      <h1>إزاي الـ AI بيفهم إن الكلام متشابه في المعنى؟</h1>
+      <p class="subtitle">الحل: بيحوّل الكلام لإحداثيات على خريطة</p>
+
+      <p>في <a href="../01-tiktokenization/">المقال اللي فات</a> اتكلمنا إن النص بيتقسّم لـ Tokens، وكل Token ليه رقم تعريف (ID). لكن الرقم ده لوحده مايقولش حاجة عن المعنى — رقم 204 ورقم 87 مفيش بينهم أي علاقة رقمية حقيقية.</p>
+      <p>هنا يجي دور الـ <b>Embeddings</b>: النموذج بياخد الكلمة أو الجملة ويحوّلها لقائمة أرقام (Vector) — تخيّلها إحداثيات على خريطة كبيرة جدًا، بس بدل بُعدين زي الخريطة العادية، عندها مئات الأبعاد.</p>
+      <div class="callout">الكلام اللي معناه قريب بيقع في نفس المنطقة على الخريطة دي، حتى لو الكلمات نفسها مختلفة تمامًا. <b>"قطة صغيرة"</b> هتبقى قريبة من <b>"حيوان أليف"</b> أكتر من قربها من <b>"برمجة كمبيوتر"</b> — رغم إنهم متقاسمناش ولا كلمة واحدة.</div>
+
+      <h2>طب إزاي بيتحسب "القرب" ده؟</h2>
+      <p>بيستخدموا مقياس اسمه <b>Cosine Similarity</b>: بياخد اتجاه المتجهين (Vectors) ويحسب مدى تشابههم. النتيجة رقم من -1 لـ 1: كل ما اقترب من 1 يبقى المعنى متشابه أكتر، وكل ما اقترب من صفر يبقى مفيش علاقة تقريبًا.</p>
+
+      <svg class="concept-diagram" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="رسم توضيحي: كلمات موزّعة في مساحة المعنى، الكلمات المتشابهة زي قطة وكلب وأسد قريبة من بعض، بعيدة عن كلمات غير مرتبطة زي بيتزا أو كود">
+        <defs>
+          <radialGradient id="gTeal" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#49C9B8" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="#49C9B8" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="gWarm" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#F0997B" stop-opacity="0.20"/>
+            <stop offset="100%" stop-color="#F0997B" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="gPurple" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#AFA9EC" stop-opacity="0.20"/>
+            <stop offset="100%" stop-color="#AFA9EC" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <rect x="1" y="1" width="1198" height="628" rx="28" fill="#0C1219" stroke="#1A2430" stroke-width="2"/>
+
+        <ellipse cx="940" cy="230" rx="230" ry="170" fill="url(#gTeal)"/>
+        <ellipse cx="220" cy="520" rx="230" ry="160" fill="url(#gWarm)"/>
+        <ellipse cx="640" cy="470" rx="230" ry="160" fill="url(#gPurple)"/>
+
+        <circle cx="44" cy="44" r="5" fill="#49C9B8"/>
+        <text x="58" y="49" class="mono" font-size="15" letter-spacing="2" fill="#49C9B8">EKOAI · LEARNING PATH</text>
+
+        <text x="44" y="102" class="display" font-weight="800" font-size="42" fill="#EEF2F6">Embeddings</text>
+        <text x="44" y="136" font-size="21" fill="#8B9AAB">لما الكلام يتحول لإحداثيات في مساحة المعنى</text>
+
+        <line x1="860" y1="330" x2="980" y2="190" stroke="#49C9B8" stroke-width="2.5" stroke-dasharray="6 6" opacity="0.85"/>
+        <line x1="860" y1="330" x2="180" y2="500" stroke="#5A6A7A" stroke-width="2" stroke-dasharray="6 6" opacity="0.55"/>
+
+        <g>
+          <rect x="898" y="243" width="52" height="26" rx="8" fill="#0C1219" stroke="#49C9B8" stroke-width="1.5"/>
+          <text x="924" y="260" class="mono" font-size="13" font-weight="600" fill="#6EEAD8" text-anchor="middle">0.86</text>
+        </g>
+        <g>
+          <rect x="493" y="408" width="52" height="26" rx="8" fill="#0C1219" stroke="#243040" stroke-width="1.5"/>
+          <text x="519" y="425" class="mono" font-size="13" font-weight="600" fill="#8B9AAB" text-anchor="middle">0.09</text>
+        </g>
+
+        <circle cx="860" cy="330" r="10" fill="#0C1219" stroke="#6EEAD8" stroke-width="3"/>
+        <text x="878" y="335" font-size="17" font-weight="600" fill="#EEF2F6">"قطة صغيرة" ← اللي كتبته</text>
+
+        <circle cx="980" cy="190" r="7" fill="#5DCAA5"/>
+        <text x="998" y="195" font-size="17" fill="#d7dbe2">قطة</text>
+        <circle cx="900" cy="175" r="7" fill="#5DCAA5"/>
+        <text x="918" y="180" font-size="17" fill="#d7dbe2">كلب</text>
+        <circle cx="945" cy="288" r="7" fill="#5DCAA5"/>
+        <text x="963" y="293" font-size="17" fill="#d7dbe2">أسد</text>
+
+        <circle cx="180" cy="500" r="7" fill="#F0997B"/>
+        <text x="198" y="505" font-size="17" fill="#d7dbe2">بيتزا</text>
+        <circle cx="260" cy="545" r="7" fill="#F0997B"/>
+        <text x="278" y="550" font-size="17" fill="#d7dbe2">برجر</text>
+        <circle cx="150" cy="560" r="7" fill="#F0997B"/>
+        <text x="90" y="578" font-size="17" fill="#d7dbe2">كيكة</text>
+
+        <circle cx="600" cy="450" r="7" fill="#AFA9EC"/>
+        <text x="618" y="455" font-size="17" fill="#d7dbe2">دالة</text>
+        <circle cx="700" cy="495" r="7" fill="#AFA9EC"/>
+        <text x="718" y="500" font-size="17" fill="#d7dbe2">خوارزمية</text>
+        <circle cx="560" cy="515" r="7" fill="#AFA9EC"/>
+        <text x="500" y="538" font-size="17" fill="#d7dbe2">كود</text>
+
+        <circle cx="44" cy="612" r="6" fill="#5DCAA5"/>
+        <text x="58" y="617" class="mono" font-size="13" fill="#8B9AAB">حيوانات</text>
+        <circle cx="190" cy="612" r="6" fill="#F0997B"/>
+        <text x="204" y="617" class="mono" font-size="13" fill="#8B9AAB">أكل</text>
+        <circle cx="300" cy="612" r="6" fill="#AFA9EC"/>
+        <text x="314" y="617" class="mono" font-size="13" fill="#8B9AAB">برمجة</text>
+      </svg>
+      <p class="hint" style="margin-top:-8px;">الأقرب مكانيًا على الخريطة = الأقرب في المعنى. لاحظ إن "قطة صغيرة" قريبة من "قطة" (0.86) لكنها بعيدة عن "بيتزا" (0.09) — بالظبط زي الجملة اللي هتجربها تحت في الديمو.</p>
+
+      <h2>طب الإحداثيات دي جايه منين؟</h2>
+      <p>النموذج بيتدرب على كميات ضخمة من النصوص، وبيتعلم إن الكلمات اللي بتيجي في سياقات متشابهة يبقى ليها إحداثيات قريبة من بعض. مفيش حد كاتب الإحداثيات دي يدويًا؛ النموذج هو اللي بيكتشفها من البيانات لوحده.</p>
+
+      <h2>طب ده بيتستخدم فين في شغل حقيقي؟</h2>
+      <p><b>البحث الدلالي (Semantic Search):</b> تدور بالمعنى مش بس بكلمة معينة.</p>
+      <p><b>التوصيات (Recommendations):</b> "منتجات مشابهة" أو "مقالات ذات صلة".</p>
+      <p><b>تجميع البيانات (Clustering):</b> تصنيف آلاف الرسائل أو التعليقات حسب الموضوع من غير ما حد يصنّفهم يدويًا.</p>
+      <p><b>RAG (Retrieval-Augmented Generation):</b> تقنية بتخلي الـ AI يدوّر في مستنداتك الخاصة عشان يجاوب بدقة — ومعتمدة أساسًا على الـ Embeddings.</p>
+
+      <h2>الخلاصة</h2>
+      <p>الـ Embeddings هي اللي بتخلي الـ AI يفهم "المعنى" مش بس "الكلمة"، وهي حجر الأساس لحاجات كتير زي البحث الذكي والتوصيات وحتى الـ RAG.</p>
+      <p class="hash">#EKOAI</p>
+    </article>
+
+    <div class="demo-card" id="demo" lang="ar" dir="rtl">
+      <h3>جرّب بنفسك: Semantic Similarity Playground</h3>
+      <p class="hint-top">اكتب جملة بالإنجليزي، وشوف مين من الجمل التمانية التانية أقرب لها في المعنى — لاحظ إن أقرب جملة غالبًا مش بتشارك ولا كلمة واحدة مع اللي كتبته!</p>
+
+      <div class="controls">
+        <button class="example-btn" type="button" data-example="a fluffy kitten">a fluffy kitten</button>
+        <button class="example-btn" type="button" data-example="debugging a python script">debugging a python script</button>
+        <button class="example-btn" type="button" data-example="ordering dinner tonight">ordering dinner tonight</button>
+      </div>
+
+      <textarea id="queryInput" dir="ltr" lang="en" placeholder="Type any English sentence...">a fluffy kitten</textarea>
+
+      <p class="model-progress" id="modelStatus">جاري تحميل نموذج الفهم الدلالي لأول مرة (~23MB)… هيتخزن كاش في المتصفح، فمن تاني مرة هيكون فوري.</p>
+
+      <div class="section-title">📊 الترتيب حسب التشابه في المعنى</div>
+      <div class="rank-list" id="rankList">
+        <div class="placeholder">استنى تحميل النموذج...</div>
+      </div>
+
+      <p class="hint">
+        <b>ملحوظة:</b> النموذج المستخدم هنا (all-MiniLM-L6-v2) مدرّب أساسًا على الإنجليزي، عشان يفضل التحميل خفيف (~23MB) ويشتغل بسرعة في المتصفح. فيه نماذج متعددة اللغات بتفهم العربي كمان، لكنها أتقل بكتير في التحميل.
+        الأرقام هنا كوسينز-سيمليريتي (Cosine Similarity) حقيقية محسوبة في المتصفح — مفيش نص بيتبعت لأي سيرفر.
+      </p>
+
+      <div class="demo-foot" dir="ltr" lang="en">
+        <span>Runs in the browser via WebAssembly — nothing is sent to a server.</span>
+        <a href="../../AI_Track/2-Embeddings/embedding-explorer.html">Open standalone example ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="foot-note">KHALED OWEAS · LEARNING PATH · EKOAI · LESSON 02 EMBEDDINGS</p>
+  </div>
+</footer>
+</div>
+
+<script src="../assets/learning-path.js"></script>
+<script type="module">
+  import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.0';
+
+  const corpus = [
+    'The cat is sleeping on the sofa.',
+    'Dogs are loyal and friendly animals.',
+    'I love eating pizza on the weekend.',
+    'This restaurant serves amazing burgers.',
+    'The stock market went up sharply today.',
+    'I need to fix a bug in my JavaScript code.',
+    'Machine learning models can understand meaning.',
+    'The weather is sunny and warm today.',
+  ];
+
+  const els = {
+    input: document.getElementById('queryInput'),
+    status: document.getElementById('modelStatus'),
+    rankList: document.getElementById('rankList'),
+  };
+
+  function dot(a, b) {
+    let s = 0;
+    for (let i = 0; i < a.length; i++) s += a[i] * b[i];
+    return s;
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  let extractor = null;
+  let corpusVecs = null;
+  let requestSeq = 0;
+  let debounceTimer = null;
+
+  async function init() {
+    try {
+      extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+      const output = await extractor(corpus, { pooling: 'mean', normalize: true });
+      corpusVecs = output.tolist();
+      els.status.textContent = '';
+      render();
+    } catch (err) {
+      els.status.textContent = 'حصل خطأ في تحميل النموذج — تأكد من اتصال الإنترنت وحاول تاني.';
+      els.status.classList.add('error');
+      console.error(err);
+    }
+  }
+
+  async function render() {
+    const text = els.input.value.trim();
+    if (!extractor || !corpusVecs) return;
+    if (!text) {
+      els.rankList.innerHTML = '<div class="placeholder">اكتب جملة عشان تشوف أقرب الجمل ليها في المعنى</div>';
+      return;
+    }
+    const myReq = ++requestSeq;
+    els.rankList.innerHTML = '<div class="loading">بيحسب التشابه...</div>';
+    const qOutput = await extractor([text], { pooling: 'mean', normalize: true });
+    if (myReq !== requestSeq) return; // a newer request superseded this one
+    const qVec = qOutput.tolist()[0];
+
+    const scored = corpus.map((s, i) => ({ text: s, score: dot(qVec, corpusVecs[i]) }));
+    scored.sort((a, b) => b.score - a.score);
+    const maxS = scored[0].score;
+    const minS = scored[scored.length - 1].score;
+    const range = Math.max(1e-6, maxS - minS);
+
+    els.rankList.innerHTML = '';
+    scored.forEach((item, idx) => {
+      const pct = ((item.score - minS) / range) * 100;
+      const row = document.createElement('div');
+      row.className = 'rank-item' + (idx === 0 ? ' top' : '');
+      row.innerHTML = `
+        <span class="rank-sentence">${escapeHtml(item.text)}</span>
+        <span class="rank-bar-track"><span class="rank-bar-fill" style="width:${pct}%"></span></span>
+        <span class="rank-score">${item.score.toFixed(2)}</span>
+      `;
+      els.rankList.appendChild(row);
+    });
+  }
+
+  function scheduleRender() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(render, 350);
+  }
+
+  els.input.addEventListener('input', scheduleRender);
+  document.querySelectorAll('.example-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      els.input.value = btn.dataset.example;
+      render();
+    });
+  });
+
+  init();
+</script>
+</body>
+</html>
